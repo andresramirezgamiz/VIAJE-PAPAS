@@ -1,0 +1,13 @@
+{
+  "name": "Viaje Familia España & Italia 2026",
+  "short_name": "Viaje 2026",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#EEF1EF",
+  "theme_color": "#132A3A",
+  "description": "Itinerario completo del viaje familiar a España e Italia, agosto 2026",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
