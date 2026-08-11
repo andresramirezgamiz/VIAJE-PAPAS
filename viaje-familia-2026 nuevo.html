@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="theme-color" content="#132A3A">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Viaje Familia · Ago 2026</title>
+<style>
+:root{
+  --ink:#132A3A;--ink-2:#2E4859;--ink-3:#61798A;
+  --bg:#EEF1EF;--card:#FFFFFF;--line:#DCE2DE;
+  --gold:#C08A2E;--gold-bg:#FBF0DC;
+  --teal:#176B62;--teal-bg:#DCEDEA;
+  --coral:#B04437;--coral-bg:#F7E1DD;
+  --warn:#8A6410;--warn-bg:#FCF3DC;--warn-line:#E0C27C;
+  --r:16px;--tap:48px;
+  --font:system-ui,-apple-system,'Roboto','Segoe UI',sans-serif;
+  --serif:'Noto Serif',Georgia,serif;--mono:'Roboto Mono',monospace;
+  --nav-h:68px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 4px);overscroll-behavior-y:contain;}
+h1,h2,h3,h4{margin:0;font-family:var(--serif);font-weight:700;line-height:1.2;}
+button{font-family:inherit;font-size:inherit;border:none;background:none;color:inherit;cursor:pointer;padding:0;}
+a{color:var(--teal);text-decoration:none;}
+.view{display:none;animation:fadeIn .22s ease;}
+.view.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.wrap{max-width:680px;margin:0 auto;padding:0 14px;}
+
+/* HERO */
+.hero{background:radial-gradient(circle at 88% -20%,rgba(192,138,46,.45),transparent 58%),
+  linear-gradient(155deg,#132A3A 0%,#1A3A50 55%,#11423E 100%);
+  color:#F2F5F3;padding:28px 16px 24px;position:relative;overflow:hidden;}
+.hero-eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.72;}
+.hero h1{font-size:30px;margin-top:5px;}
+.hero-sub{margin-top:7px;font-size:14px;opacity:.85;max-width:460px;}
+.hero-stamp{position:absolute;top:16px;right:14px;width:74px;height:74px;border:2px solid rgba(242,245,243,.4);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;transform:rotate(-9deg);
+  font-family:var(--mono);font-size:9px;letter-spacing:.05em;text-align:center;line-height:1.35;color:rgba(242,245,243,.68);}
+.countdown{margin-top:16px;display:inline-flex;align-items:center;gap:9px;
+  background:rgba(242,245,243,.13);border:1px solid rgba(242,245,243,.28);
+  padding:9px 15px;border-radius:999px;font-size:13.5px;font-weight:600;}
+.countdown b{font-family:var(--mono);font-size:16px;}
+
+/* CITY HERO */
+.city-hero{color:#F2F5F3;padding:24px 16px 20px;position:relative;overflow:hidden;}
+.city-hero.madrid{background:radial-gradient(circle at 80% -10%,rgba(100,180,255,.3),transparent 60%),linear-gradient(155deg,#1A5E9C,#0F3D6E);}
+.city-hero.roma{background:radial-gradient(circle at 80% -10%,rgba(255,140,80,.3),transparent 60%),linear-gradient(155deg,#8B3A1E,#5C2010);}
+.city-hero.venecia{background:radial-gradient(circle at 80% -10%,rgba(80,200,220,.3),transparent 60%),linear-gradient(155deg,#1E6B7C,#0F404E);}
+.city-hero.info-h{background:linear-gradient(155deg,#2E1A4A,#1A3A50);}
+.city-hero h1{font-size:26px;}
+.city-hero p{margin:6px 0 0;font-size:13.5px;opacity:.85;}
+.quick-info{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;}
+.qi{display:flex;align-items:center;gap:6px;background:rgba(242,245,243,.15);border:1px solid rgba(242,245,243,.3);
+  padding:7px 11px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;}
+.qi:active{background:rgba(242,245,243,.25);}
+.qi svg{width:14px;height:14px;flex-shrink:0;}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(19,42,58,.6);z-index:50;display:flex;align-items:flex-end;
+  opacity:0;pointer-events:none;transition:opacity .2s ease;}
+.modal-bg.show{opacity:1;pointer-events:auto;}
+.modal{background:var(--bg);border-radius:22px 22px 0 0;padding:20px 16px 32px;
+  width:100%;max-height:82vh;overflow-y:auto;transform:translateY(100%);transition:transform .25s ease;}
+.modal-bg.show .modal{transform:translateY(0);}
+.modal-handle{width:40px;height:4px;background:var(--line);border-radius:2px;margin:0 auto 16px;}
+.modal h2{font-size:20px;margin-bottom:14px;}
+.modal-close{float:right;font-size:24px;color:var(--ink-3);margin-top:-4px;line-height:1;}
+
+/* DAY NAV */
+.daynav-wrap{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:9px 0;}
+.daynav{display:flex;gap:7px;overflow-x:auto;padding:0 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.daynav::-webkit-scrollbar{display:none;}
+.daypill{flex:0 0 auto;min-width:52px;min-height:var(--tap);text-align:center;padding:6px 5px;
+  border-radius:13px;border:1.5px solid var(--line);background:var(--card);
+  display:flex;flex-direction:column;justify-content:center;transition:background .15s,border-color .15s;}
+.daypill .dow{font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);}
+.daypill .num{font-family:var(--serif);font-weight:700;font-size:18px;line-height:1.1;}
+.daypill .dot{width:5px;height:5px;border-radius:50%;background:var(--teal);margin:2px auto 0;}
+.daypill.free .dot{background:var(--line);}
+.daypill.active{background:var(--ink);border-color:var(--ink);}
+.daypill.active .dow{color:rgba(242,245,243,.7);}
+.daypill.active .num{color:#F2F5F3;}
+.daypill.active .dot{background:var(--gold);}
+
+/* DAY */
+main{padding:18px 0 10px;}
+.day-section{margin-bottom:30px;scroll-margin-top:70px;}
+.day-head{display:flex;align-items:baseline;gap:9px;margin-bottom:11px;padding-bottom:7px;border-bottom:2px solid var(--ink);}
+.day-head .dnum{font-family:var(--serif);font-weight:700;font-size:24px;}
+.day-head .dmeta{font-size:12.5px;color:var(--ink-3);font-weight:600;}
+.day-head .dcity{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;
+  background:var(--teal-bg);color:var(--teal);padding:3px 9px;border-radius:999px;white-space:nowrap;}
+.day-note{background:var(--gold-bg);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;
+  padding:9px 12px;font-size:13px;color:var(--warn);margin-bottom:10px;}
+
+/* TICKET */
+.ticket{display:flex;background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  margin-bottom:9px;overflow:hidden;position:relative;box-shadow:0 1px 3px rgba(19,42,58,.05);}
+.ticket.pending{background:var(--warn-bg);border:1.5px dashed var(--warn-line);}
+.stub{flex:0 0 72px;background:var(--ink);color:#F2F5F3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:11px 4px;position:relative;}
+.ticket.pending .stub{background:var(--warn-line);color:#5A4408;}
+.ticket.flight .stub{background:#1A3A50;}
+.ticket.train .stub{background:#17564E;}
+.ticket.hotel .stub{background:#2E4859;}
+.ticket.food .stub{background:#8A4A2E;}
+.ticket.ticketE .stub{background:#6B4A14;}
+.ticket.papal .stub{background:#5B4B8A;}
+.stub svg{width:21px;height:21px;margin-bottom:5px;}
+.stub .t{font-family:var(--mono);font-size:11.5px;font-weight:600;text-align:center;line-height:1.3;}
+.stub::after{content:"";position:absolute;right:0;top:0;bottom:0;border-right:2px dashed rgba(242,245,243,.32);}
+.notch{position:absolute;left:72px;width:12px;height:12px;background:var(--bg);border-radius:50%;transform:translateX(-50%);z-index:2;}
+.notch.t{top:-6px;}.notch.b{bottom:-6px;}
+.tbody{flex:1;padding:11px 13px 12px 17px;min-width:0;}
+.ttitle{font-weight:700;font-size:15px;line-height:1.3;}
+.tloc{font-size:12.5px;color:var(--ink-3);margin-top:2px;}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
+.chip{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:999px;}
+.c-mama{background:var(--coral-bg);color:var(--coral);}
+.c-papa{background:var(--teal-bg);color:var(--teal);}
+.c-hermano{background:var(--gold-bg);color:#8A6410;}
+.c-todos{background:#E2E6EA;color:var(--ink-2);}
+.tcode{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);margin-top:7px;}
+.tcode b{color:var(--ink);letter-spacing:.04em;font-size:12.5px;}
+.pbadge{display:inline-block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
+  color:#5A4408;background:var(--warn-line);padding:2px 7px;border-radius:6px;margin-bottom:5px;}
+.tactions{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap;}
+.tbtn{min-height:38px;display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:10px;
+  font-size:12.5px;font-weight:600;background:#EDF1EF;color:var(--ink-2);border:1px solid var(--line);transition:transform .1s;}
+.tbtn:active{transform:scale(.96);}
+.tbtn svg{width:14px;height:14px;}
+.tbtn.map{background:var(--teal-bg);color:var(--teal);border-color:#BFDCD7;}
+.tbtn.tel{background:var(--coral-bg);color:var(--coral);border-color:#E9CBC5;}
+.detail{display:none;margin-top:10px;padding-top:9px;border-top:1px solid var(--line);
+  font-size:13.5px;line-height:1.55;color:var(--ink-2);}
+.detail.open{display:block;animation:slideDown .2s ease;}
+.detail p{margin:0 0 8px;}.detail ul{margin:0 0 8px;padding-left:18px;}.detail li{margin-bottom:4px;}
+.detail .kv{display:flex;gap:8px;padding:3px 0;font-size:13px;}
+.detail .kv span:first-child{flex:0 0 88px;color:var(--ink-3);font-weight:600;}
+.detail .alert{background:var(--warn-bg);border-left:3px solid var(--warn-line);padding:8px 10px;
+  border-radius:0 8px 8px 0;margin:8px 0;font-size:12.5px;color:var(--warn);}
+
+.freeday{border:1.5px dashed var(--line);border-radius:var(--r);padding:16px;background:rgba(255,255,255,.55);}
+.freeday b{display:block;color:var(--ink-2);font-size:14.5px;margin-bottom:6px;}
+.freeday p{margin:0 0 10px;font-size:13.5px;color:var(--ink-3);}
+.freeday .tips{display:flex;flex-direction:column;gap:6px;}
+.tip-row{display:flex;align-items:flex-start;gap:9px;padding:8px 10px;background:var(--card);
+  border-radius:10px;border:1px solid var(--line);font-size:13px;}
+.tip-row .ti{flex:0 0 auto;font-size:16px;}
+.freeday .sug{margin-top:10px;display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;color:var(--teal);}
+
+/* GUIDE */
+.filterbar{position:sticky;top:0;z-index:19;background:var(--bg);padding:10px 0 8px;border-bottom:1px solid var(--line);}
+.filters{display:flex;gap:7px;overflow-x:auto;padding:0 14px;scrollbar-width:none;}
+.filters::-webkit-scrollbar{display:none;}
+.fchip{flex:0 0 auto;min-height:40px;display:flex;align-items:center;padding:8px 15px;border-radius:999px;
+  border:1.5px solid var(--line);background:var(--card);font-size:13px;font-weight:600;color:var(--ink-2);white-space:nowrap;}
+.fchip.on{background:var(--ink);color:#F2F5F3;border-color:var(--ink);}
+
+.place{background:var(--card);border:1px solid var(--line);border-radius:var(--r);margin-bottom:10px;
+  overflow:hidden;box-shadow:0 1px 3px rgba(19,42,58,.05);}
+.place-head{display:flex;align-items:flex-start;gap:11px;padding:13px 14px;min-height:var(--tap);cursor:pointer;}
+.place-head:active{background:#F5F7F5;}
+.place-idx{flex:0 0 34px;height:34px;border-radius:10px;background:var(--gold-bg);color:#8A6410;
+  display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:600;font-size:13px;transition:transform .15s;}
+.place.booked .place-idx{background:var(--teal-bg);color:var(--teal);}
+.place.open .place-idx{transform:scale(1.1);}
+.place-t{flex:1;min-width:0;}
+.place-t h3{font-size:16px;line-height:1.25;}
+.place-tag{font-size:11.5px;color:var(--ink-3);margin-top:2px;}
+.place-arrow{flex:0 0 auto;color:var(--ink-3);transition:transform .2s;padding-top:5px;}
+.place.open .place-arrow{transform:rotate(180deg);}
+.place-body{display:none;padding:0 14px 14px;}
+.place.open .place-body{display:block;animation:slideDown .2s ease;}
+.story{font-family:var(--serif);font-size:14.5px;line-height:1.6;color:var(--ink-2);
+  border-left:3px solid var(--gold);padding-left:12px;margin-bottom:12px;}
+.facts{margin-bottom:11px;}
+.fact{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid #F0F3F1;font-size:13.5px;}
+.fact:last-child{border-bottom:none;}
+.fact .fk{flex:0 0 78px;color:var(--ink-3);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding-top:1px;}
+.fact .fv{flex:1;}
+.tip-box{background:var(--teal-bg);border-radius:10px;padding:10px 12px;font-size:13px;color:#0F4F48;line-height:1.5;}
+.tip-box b{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;color:var(--teal);}
+.booked-flag{background:var(--teal);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;display:inline-block;margin-bottom:9px;}
+.sectitle{font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);margin:24px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line);}
+.sectitle:first-of-type{margin-top:16px;}
+
+/* INFO */
+.icard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px;}
+.icard h3{font-size:16px;margin-bottom:8px;}
+.icard p{margin:0 0 9px;font-size:13.5px;line-height:1.55;color:var(--ink-2);}
+.icard p:last-child{margin-bottom:0;}
+.icard ul{margin:0 0 9px;padding-left:19px;font-size:13.5px;line-height:1.6;color:var(--ink-2);}
+.icard li{margin-bottom:5px;}
+.icard.emg{border:1.5px solid var(--coral);background:var(--coral-bg);}
+.icard.emg h3{color:var(--coral);}
+.icard.warn2{border:1.5px solid var(--warn-line);background:var(--warn-bg);}
+.icard.warn2 h3{color:var(--warn);}
+.bigcall{display:flex;align-items:center;justify-content:center;gap:9px;min-height:56px;
+  background:var(--coral);color:#fff;border-radius:14px;font-size:19px;font-weight:800;margin-bottom:10px;transition:transform .1s;}
+.bigcall:active{transform:scale(.97);}
+.bigcall svg{width:22px;height:22px;}
+.callrow{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line);min-height:var(--tap);}
+.callrow:last-child{border-bottom:none;}
+.callrow .cr-t{flex:1;min-width:0;}
+.callrow .cr-t b{display:block;font-size:14px;}
+.callrow .cr-t span{font-size:12.5px;color:var(--ink-3);}
+.cr-a{flex:0 0 auto;min-height:40px;display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:10px;
+  background:var(--teal-bg);color:var(--teal);font-size:12.5px;font-weight:700;transition:transform .1s;}
+.cr-a:active{transform:scale(.96);}
+.cr-a svg{width:14px;height:14px;}
+.phrase{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #F0F3F1;font-size:14px;}
+.phrase:last-child{border-bottom:none;}
+.phrase .ph-i{flex:1;font-weight:600;}
+.phrase .ph-m{flex:1;color:var(--ink-3);font-style:italic;}
+
+/* BOTTOM NAV */
+.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:40;
+  background:rgba(255,255,255,.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);display:flex;height:var(--nav-h);padding-bottom:env(safe-area-inset-bottom);}
+.navbtn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  color:var(--ink-3);font-size:10.5px;font-weight:600;padding-top:4px;position:relative;transition:color .15s;}
+.navbtn svg{width:22px;height:22px;transition:transform .2s,stroke .15s;}
+.navbtn.on{color:var(--ink);}
+.navbtn.on svg{stroke:var(--teal);transform:scale(1.1);}
+.navbtn::after{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  height:2px;width:0;background:var(--teal);border-radius:0 0 2px 2px;transition:width .2s ease;}
+.navbtn.on::after{width:28px;}
+.toTop{position:fixed;right:14px;bottom:calc(var(--nav-h) + 14px + env(safe-area-inset-bottom));
+  width:44px;height:44px;border-radius:50%;background:var(--ink);color:#F2F5F3;
+  display:none;align-items:center;justify-content:center;z-index:35;box-shadow:0 3px 10px rgba(0,0,0,.2);}
+.toTop.show{display:flex;}
+
+/* ===== FAB AGREGAR RESERVA ===== */
+.fab-add{
+  position:fixed;right:14px;
+  bottom:calc(var(--nav-h) + 62px + env(safe-area-inset-bottom));
+  width:52px;height:52px;border-radius:50%;background:var(--teal);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;font-weight:300;line-height:1;
+  box-shadow:0 4px 16px rgba(23,107,98,.45);z-index:35;transition:transform .15s,opacity .15s;
+}
+.fab-add:active{transform:scale(.92);}
+.fab-add.hide{opacity:0;pointer-events:none;}
+/* ===== FORM DE RESERVA ===== */
+.add-form{display:flex;flex-direction:column;gap:13px;padding-bottom:4px;}
+.add-form label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);margin-bottom:3px;display:block;}
+.add-form input,.add-form select,.add-form textarea{
+  width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:12px;
+  font-family:inherit;font-size:15px;color:var(--ink);background:var(--card);
+  -webkit-appearance:none;outline:none;transition:border-color .15s;
+}
+.add-form input:focus,.add-form select:focus,.add-form textarea:focus{border-color:var(--teal);}
+.add-form textarea{resize:none;height:72px;line-height:1.5;}
+.who-chips{display:flex;gap:8px;flex-wrap:wrap;}
+.wc{padding:9px 16px;border-radius:999px;border:1.5px solid var(--line);font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .15s;background:var(--card);color:var(--ink-2);}
+.wc.on.mama{background:var(--coral-bg);color:var(--coral);border-color:var(--coral);}
+.wc.on.papa{background:var(--teal-bg);color:var(--teal);border-color:var(--teal);}
+.wc.on.hermano{background:var(--gold-bg);color:#8A6410;border-color:var(--gold);}
+.btn-save{
+  width:100%;padding:15px;border-radius:14px;background:var(--teal);color:#fff;
+  font-size:16px;font-weight:700;border:none;cursor:pointer;transition:transform .1s;margin-top:4px;
+}
+.btn-save:active{transform:scale(.97);}
+.custom-ticket{border:2px solid var(--teal);position:relative;}
+.custom-ticket .stub{background:var(--teal);}
+.del-btn{
+  position:absolute;top:8px;right:10px;width:28px;height:28px;border-radius:50%;
+  background:rgba(176,68,55,.12);color:var(--coral);font-size:18px;line-height:28px;text-align:center;
+  cursor:pointer;font-weight:700;transition:background .15s;
+}
+.del-btn:active{background:var(--coral-bg);}
+.res-badge{display:inline-block;background:var(--teal);color:#fff;font-size:10px;font-weight:800;
+  padding:2px 8px;border-radius:999px;margin-bottom:5px;letter-spacing:.02em;}
+footer{text-align:center;font-size:11.5px;color:var(--ink-3);padding:26px 20px 10px;}
+</style>
+</head>
+<body>
+<section class="view active" id="v-itin">
+  <div class="hero">
+    <div class="hero-stamp">MADRID<br>ROMA<br>VENECIA<br>2026</div>
+    <div class="hero-eyebrow">Familia Ramírez Gámiz</div>
+    <h1>España &amp; Italia</h1>
+    <div class="hero-sub">5 al 29 de agosto de 2026 · Todos los boletos, reservas y guías en un solo lugar.</div>
+    <div class="countdown" id="countdown">Cargando…</div>
+  </div>
+  <div class="daynav-wrap"><div class="daynav" id="daynav"></div></div>
+  <main><div class="wrap" id="itin-main"></div></main>
+  <footer>Hecho por Andrés con mucho cariño 🧡<br>Guárdenlo en la pantalla de inicio — funciona sin internet.</footer>
+</section>
+<section class="view" id="v-madrid">
+  <div class="city-hero madrid">
+    <h1>🇪🇸 Madrid</h1>
+    <p>6–18 y 24–29 agosto · Calle de Larra 3, Chamberí</p>
+    <div class="quick-info">
+      <button class="qi" onclick="showModal('m-datos')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Depa y vuelos</button>
+      <button class="qi" onclick="showModal('m-trans')">🚇 Metro</button>
+      <button class="qi" onclick="showModal('m-super')">🛒 Supermercados</button>
+    </div>
+  </div>
+  <div class="filterbar"><div class="filters" id="f-madrid"></div></div>
+  <div class="wrap" id="g-madrid" style="padding-top:14px;"></div>
+</section>
+<section class="view" id="v-roma">
+  <div class="city-hero roma">
+    <h1>🇮🇹 Roma</h1>
+    <p>18–22 agosto · Hotel Adriano Rooftop, Via d'Ascanio 11</p>
+    <div class="quick-info">
+      <button class="qi" onclick="showModal('r-datos')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Hotel y vuelos</button>
+      <button class="qi" onclick="showModal('r-trans')">🚌 Transporte</button>
+    </div>
+  </div>
+  <div class="filterbar"><div class="filters" id="f-roma"></div></div>
+  <div class="wrap" id="g-roma" style="padding-top:14px;"></div>
+</section>
+<section class="view" id="v-venecia">
+  <div class="city-hero venecia">
+    <h1>🇮🇹 Venecia</h1>
+    <p>22–24 agosto · Hotel Olimpia, Santa Croce 395</p>
+    <div class="quick-info">
+      <button class="qi" onclick="showModal('v-datos')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Hotel y vuelos</button>
+      <button class="qi" onclick="showModal('v-trans')">🚤 Vaporetto</button>
+    </div>
+  </div>
+  <div class="filterbar"><div class="filters" id="f-venecia"></div></div>
+  <div class="wrap" id="g-venecia" style="padding-top:14px;"></div>
+</section>
+<section class="view" id="v-info">
+  <div class="city-hero info-h">
+    <h1>ℹ️ Info útil</h1>
+    <p>Emergencias, dinero, transporte, frases y todos los códigos.</p>
+  </div>
+  <div class="wrap" id="g-info" style="padding-top:14px;"></div>
+</section>
+
+<!-- FAB AGREGAR RESERVA -->
+<button class="fab-add" id="fabAdd" aria-label="Agregar reserva" onclick="openAddReserva()">+</button>
+
+<!-- MODAL AGREGAR RESERVA -->
+<div class="modal-bg" id="modal-add-bg" onclick="closeAddReserva()">
+  <div class="modal" onclick="event.stopPropagation()" style="max-height:90vh;">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeAddReserva()">×</button>
+    <h2 id="add-modal-title">Nueva reserva</h2>
+    <div class="add-form" id="add-form">
+      <div>
+        <label>📅 Fecha</label>
+        <select id="af-date"></select>
+      </div>
+      <div>
+        <label>🍽 Restaurante o actividad</label>
+        <input id="af-name" type="text" placeholder="Ej: Restaurante Casa Pepe" autocomplete="off">
+      </div>
+      <div style="display:flex;gap:10px;">
+        <div style="flex:1">
+          <label>🕐 Hora</label>
+          <input id="af-time" type="time" value="20:00">
+        </div>
+        <div style="flex:1">
+          <label>👥 Personas</label>
+          <input id="af-pax" type="number" min="1" max="10" value="3" placeholder="3">
+        </div>
+      </div>
+      <div>
+        <label>¿Quiénes van?</label>
+        <div class="who-chips">
+          <button type="button" class="wc mama on" onclick="togWho(this,'mama')">Mamá</button>
+          <button type="button" class="wc papa on" onclick="togWho(this,'papa')">Papá</button>
+          <button type="button" class="wc hermano on" onclick="togWho(this,'hermano')">Daniel</button>
+        </div>
+      </div>
+      <div>
+        <label>🔖 Código de reserva (opcional)</label>
+        <input id="af-code" type="text" placeholder="Ej: ABC123" autocomplete="off" style="text-transform:uppercase;">
+      </div>
+      <div>
+        <label>📍 Dirección o notas (opcional)</label>
+        <textarea id="af-notes" placeholder="Ej: Calle Mayor 10, Pregunta por la terraza..."></textarea>
+      </div>
+      <button class="btn-save" onclick="guardarReserva()">✓ Guardar reserva</button>
+    </div>
+  </div>
+</div>
+<div class="modal-bg" id="modal-bg" onclick="hideModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="hideModal()">×</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+<button class="toTop" id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+<nav class="bottomnav">
+  <button class="navbtn on" data-view="v-itin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Itinerario</span></button>
+  <button class="navbtn" data-view="v-madrid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17.5 6.5 21 8 13.5 3 9l6.5-.5z"/></svg><span>Madrid</span></button>
+  <button class="navbtn" data-view="v-roma"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg><span>Roma</span></button>
+  <button class="navbtn" data-view="v-venecia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 18c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0M4 14l8-9 8 9"/></svg><span>Venecia</span></button>
+  <button class="navbtn" data-view="v-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Info</span></button>
+</nav>
+<script>
+const IC={
+ flight:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>',
+ train:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="14" rx="3"/><path d="M4 11h16M8 21l2-4M16 21l-2-4"/></svg>',
+ hotel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>',
+ food:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v7a2 2 0 002 2 2 2 0 002-2V3M9 12v9M18 3c-1.5 1-2 2.5-2 5v13"/></svg>',
+ ticketE:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9a2 2 0 100 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 100-4V6a2 2 0 00-2-2H5a2 2 0 00-2 2v3z"/></svg>',
+ papal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M12 4v-2M12 14v8M9 22h6"/></svg>',
+ note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 7v5l3 3"/></svg>',
+ map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+ tel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.1a2 2 0 012.1-.5c.9.3 1.8.6 2.8.7A2 2 0 0122 16.9z"/></svg>',
+ info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
+ chev:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>'
+};
+const WHO={mama:"Mamá",papa:"Papá",hermano:"Daniel",todos:"Los tres"};
+const gmap=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);
+</script>
+
+<script>
+const MODALS = {
+'m-datos':
+`<h2>Depa · Madrid</h2>
+<div class="icard">
+  <h3>🏠 Depa de Camila</h3>
+  <div class="fact"><span class="fk">Dirección</span><span class="fv"><b>Calle de Larra 3, Chamberí, Madrid</b></span></div>
+  <div class="fact"><span class="fk">Fechas</span><span class="fv">6–18 ago y 24–29 ago</span></div>
+  <a class="cr-a" style="display:inline-flex;margin-top:10px;" href="https://www.google.com/maps/search/?api=1&query=Calle+de+Larra+3+Madrid" target="_blank">Ver en mapa</a>
+</div>
+<h2 style="margin-top:16px;">Vuelos a/desde Madrid</h2>
+<div class="icard">
+  <div class="fact"><span class="fk">5 ago</span><span class="fv">GDL → Madrid · Mamá y Papá · <b>LJFCQW</b></span></div>
+  <div class="fact"><span class="fk">12 ago</span><span class="fv">GDL → Madrid · Daniel · <b>EMUYZD</b></span></div>
+  <div class="fact"><span class="fk">18 ago</span><span class="fv">Madrid → Roma · Daniel <b>YVFKFC</b> · Mamá <b>GRMTHL</b> · Papá <b>GRD2RL</b></span></div>
+  <div class="fact"><span class="fk">24 ago</span><span class="fv">Venecia → Madrid · Papás <b>W6Z7XA</b> · Daniel <b>Q4Q73N</b></span></div>
+  <div class="fact"><span class="fk">29 ago</span><span class="fv">Madrid → GDL · Los tres · <b>LJFCQW</b></span></div>
+</div>`,
+'m-trans':
+`<h2>Metro y transporte</h2>
+<div class="icard">
+  <h3>🚇 Estaciones cercanas a Larra 3</h3>
+  <div class="fact"><span class="fk">Bilbao</span><span class="fv">3-4 min · Líneas 1 y 4 · L1 va a Sol, Atocha, Chamartín · L4 va a Alonso Martínez, Goya</span></div>
+  <div class="fact"><span class="fk">Tribunal</span><span class="fv">3 min · Líneas 1 y 10 · L10 va a Plaza de España, Príncipe Pío</span></div>
+  <div class="fact"><span class="fk">Alonso Mtz</span><span class="fv">6 min · Líneas 4, 5, 10 · L5 va a Gran Vía, Ópera, Callao</span></div>
+</div>
+<div class="icard warn2">
+  <h3>🚗 Del aeropuerto al depa</h3>
+  <p><b>Bolt o Uber: ~15 €</b> (recomendado). Mucho mejor precio que el taxi fijo. Pídanlo desde la app antes de salir de la terminal.</p>
+  <p>El taxi tiene tarifa fija de 33 € al centro — Bolt/Uber sale casi la mitad.</p>
+  <p>Metro (L8 desde T2/T4): ~6 €, último a 1:30am — solo si llegan en horario normal y sin muchas maletas.</p>
+</div>
+<div class="icard">
+  <h3>💳 Metro</h3>
+  <div class="fact"><span class="fk">Bono 10 viajes</span><span class="fv">7,30 €</span></div>
+  <div class="fact"><span class="fk">Sencillo</span><span class="fv">1,50–2 € (contactless en torniquete)</span></div>
+</div>`,
+'m-super':
+`<h2>🛒 Supermercados</h2>
+<div class="icard">
+  <h3>Mercadona</h3>
+  <div class="fact"><span class="fk">Dónde</span><span class="fv">Fuencarral 77 (metro Tribunal) · ~10-12 min a pie</span></div>
+  <div class="fact"><span class="fk">Horario</span><span class="fv">Lun–Sáb 9:00–21:30 · <b>CIERRA DOMINGOS</b></span></div>
+  <div class="fact"><span class="fk">Tip</span><span class="fv">El más completo y barato · para la compra grande</span></div>
+</div>
+<div class="icard">
+  <h3>El Dia 📍 Casi en la esquina</h3>
+  <div class="fact"><span class="fk">Dónde</span><span class="fv"><b>Blasco de Garay 28</b> · casi en la esquina de Larra 3</span></div>
+  <div class="fact"><span class="fk">Horario</span><span class="fv">Abre casi todos los días · lo básico del día pero cumple</span></div>
+  <div class="fact"><span class="fk">Tip</span><span class="fv">El de cada día — no hay que alejarse</span></div>
+</div>
+<div class="icard">
+  <h3>Carrefour Express</h3>
+  <div class="fact"><span class="fk">Dónde</span><span class="fv">Fuencarral 158 y Manuel Silvela 9 · más cerca</span></div>
+  <div class="fact"><span class="fk">Horario</span><span class="fv">Abre todos los días incluidos domingos · cosas más específicas</span></div>
+</div>
+<div class="icard warn2">
+  <h3>💸 Cajero sin comisión</h3>
+  <p><b>OpenBank (Banco Santander)</b> — cerca de la estación <b>Alonso Martínez</b>. Sin comisión para tarjetas extranjeras. Eviten cajeros amarillos Euronet: cobran hasta 5 € extra.</p>
+</div>`,
+'r-datos':
+`<h2>Hotel · Roma</h2>
+<div class="icard">
+  <h3>🏨 Hotel Adriano Rooftop</h3>
+  <div class="fact"><span class="fk">Dirección</span><span class="fv"><b>Via d'Ascanio 11, Roma</b></span></div>
+  <div class="fact"><span class="fk">Fechas</span><span class="fv">18–22 agosto</span></div>
+  <div class="fact"><span class="fk">Reserva</span><span class="fv"><b>MR66772100</b></span></div>
+  <div class="fact"><span class="fk">Check-in</span><span class="fv">3:00 pm (dejen maletas si llegan antes)</span></div>
+  <div class="fact"><span class="fk">Check-out</span><span class="fv">10:00 am (22 agosto)</span></div>
+  <div class="fact"><span class="fk">Teléfono</span><span class="fv">+39 06 6880 2451</span></div>
+  <div style="margin-top:10px;display:flex;gap:8px;">
+    <a class="cr-a" href="https://maps.google.com/?q=Hotel+Adriano+Rooftop+Roma" target="_blank" style="display:inline-flex;">Mapa</a>
+    <a class="cr-a" href="tel:+390668802451" style="display:inline-flex;background:var(--coral-bg);color:var(--coral);">Llamar</a>
+  </div>
+</div>
+<h2 style="margin-top:16px;">Vuelos Roma</h2>
+<div class="icard">
+  <div class="fact"><span class="fk">18 ago</span><span class="fv">Madrid → Roma 6:45–9:10 · Ryanair · T1 Barajas</span></div>
+  <div class="fact"><span class="fk">22 ago</span><span class="fv">Tren Roma → Venecia 7:05 · <b>EWK5AN</b> · Coche 2 · 7A/7B/7D</span></div>
+</div>`,
+'r-trans':
+`<h2>Transporte en Roma</h2>
+<div class="icard warn2">
+  <h3>✈️ Del aeropuerto al hotel</h3>
+  <p><b>Taxi oficial: 55 € fijos</b> desde Fiumicino. Solo taxis blancos con "SERVIZIO PUBBLICO". Para 3 con maletas yendo cerca del Panteón es la mejor opción — puerta a puerta ~45 min.</p>
+  <p><b>NO</b> a quienes se acerquen en el aeropuerto ofreciendo taxi — cobran el triple.</p>
+</div>
+<div class="icard">
+  <h3>🚌 Transporte urbano</h3>
+  <div class="fact"><span class="fk">Billete BIT</span><span class="fv">1,50 € (100 min)</span></div>
+  <div class="fact"><span class="fk">24 horas</span><span class="fv">8,50 €</span></div>
+  <div class="fact"><span class="fk">48 horas</span><span class="fv">15 €</span></div>
+  <div class="fact"><span class="fk">72 horas</span><span class="fv">22 €</span></div>
+  <p style="font-size:13px;color:var(--ink-3);margin-top:6px;">Desde su hotel todo el centro es caminable. Metro para Coliseo (L-B) y Vaticano (L-A, Ottaviano).</p>
+</div>`,
+'v-datos':
+`<h2>Hotel · Venecia</h2>
+<div class="icard">
+  <h3>🏨 Hotel Olimpia Venice</h3>
+  <div class="fact"><span class="fk">Dirección</span><span class="fv"><b>Santa Croce 395, Venecia</b></span></div>
+  <div class="fact"><span class="fk">Fechas</span><span class="fv">22–24 agosto</span></div>
+  <div class="fact"><span class="fk">Reserva</span><span class="fv"><b>5289593485</b> · NIP: 0900</span></div>
+  <div class="fact"><span class="fk">Check-in</span><span class="fv">2:00 pm</span></div>
+  <div class="fact"><span class="fk">Check-out</span><span class="fv">11:00 am (24 agosto)</span></div>
+  <div class="fact"><span class="fk">Teléfono</span><span class="fv">+39 041 711041</span></div>
+  <p style="font-size:13px;margin-top:8px;">Del tren al hotel: 5-8 min caminando. No necesitan vaporetto para llegar.</p>
+  <div style="margin-top:10px;display:flex;gap:8px;">
+    <a class="cr-a" href="https://maps.google.com/?q=Hotel+Olimpia+Venice+Santa+Croce" target="_blank" style="display:inline-flex;">Mapa</a>
+    <a class="cr-a" href="tel:+39041711041" style="display:inline-flex;background:var(--coral-bg);color:var(--coral);">Llamar</a>
+  </div>
+</div>
+<h2 style="margin-top:16px;">Vuelos Venecia</h2>
+<div class="icard">
+  <div class="fact"><span class="fk">22 ago</span><span class="fv">Tren desde Roma 7:05 · <b>EWK5AN</b></span></div>
+  <div class="fact"><span class="fk">24 ago</span><span class="fv">Venecia → Madrid 13:40 · Papás <b>W6Z7XA</b> · Daniel <b>Q4Q73N</b></span></div>
+</div>`,
+'v-trans':
+`<h2>Vaporetto y transporte</h2>
+<div class="icard">
+  <h3>🚤 Vaporetto (ACTV)</h3>
+  <div class="fact"><span class="fk">Sencillo</span><span class="fv">9,50 € (75 min)</span></div>
+  <div class="fact"><span class="fk">24 horas</span><span class="fv">25 €</span></div>
+  <div class="fact"><span class="fk">48 horas</span><span class="fv">35 €</span></div>
+  <div class="fact"><span class="fk">Líneas</span><span class="fv">1 (todo el Gran Canal, lenta) · 2 (más rápida)</span></div>
+  <p style="font-size:13px;color:var(--ink-3);margin-top:6px;"><b>¡Siempre validen!</b> Sin validar: multa de 60 €.</p>
+</div>
+<div class="icard warn2">
+  <h3>✈️ Al aeropuerto Marco Polo (24 ago)</h3>
+  <p>Desde Piazzale Roma (muy cerca del hotel): <b>Bus ATVO Express: 10 €, 20 min</b>, directo. Salida ~10:20–10:40am.</p>
+  <p>El pase de vaporetto <b>NO sirve</b> para el aeropuerto. Boleto aparte.</p>
+</div>`
+};
+</script>
+
+<script>
+const DAYS=[
+{d:"2026-08-05",dow:"Miércoles",city:"GDL → Madrid",ev:[
+{t:"flight",time:"9:45",end:"4:45+1",title:"Vuelo Guadalajara → Madrid",loc:"Aeropuerto GDL · llega a Barajas T4",who:["mama","papa"],code:"LJFCQW",
+ det:`<div class="kv"><span>Terminal</span><span>T4 Barajas</span></div>
+ <div class="alert"><b>Sistema EES (2026):</b> en migración les tomarán huellas y foto. Tengan paciencia si hay fila.</div>
+ <p><b>Para llegar al depa:</b> Bolt o Uber ~15 € (mucho mejor que el taxi de 33 €).</p>`}
+]},
+{d:"2026-08-06",dow:"Jueves",city:"Madrid",note:"Primer día — jet lag garantizado. Vayan despacio.",ev:[
+{t:"note",time:"~6:00",title:"Del aeropuerto al depa de Camila",loc:"Barajas T4 → Calle de Larra 3",who:["mama","papa"],
+ det:`<p><b>Bolt o Uber: ~15 €</b>, 25-30 min. A esa hora van libres de tráfico.</p>
+ <p><b>Tip:</b> aguanten despiertos hasta la noche española. Salgan a caminar con luz del día — ayuda a resetear el reloj.</p>`,map:"Calle de Larra 3, Madrid"},
+{t:"hotel",time:"—",title:"Depa de Camila",loc:"Calle de Larra 3, Chamberí, Madrid",who:["mama","papa"],map:"Calle de Larra 3, Madrid",
+ det:`<p>Metro más cercano: <b>Bilbao</b> (3 min, L1/L4) y <b>Tribunal</b> (3 min, L1/L10).</p>
+ <p>Su barrio es Chamberí — uno de los mejores para vivir Madrid como local. Sin turistas de foto, con vecinos y terrazas.</p>`}
+]},
+{d:"2026-08-07",dow:"Viernes",city:"Madrid",ev:[
+{t:"food",time:"14:45",title:"Restaurante HER",loc:"Madrid",who:["mama","papa"],
+ det:`<div class="kv"><span>Personas</span><span>2</span></div><p>Restaurante moderno en Madrid. Las 14:45 es hora perfecta para comer en España.</p>`}
+]},
+{d:"2026-08-08",dow:"Sábado",city:"Madrid",free:true,sug:"madrid",ev:[
+{t:"food",time:"14:00",title:"La Barraca · Paella valenciana",loc:"Calle de la Reina 29, Chueca",who:["mama","papa"],
+ det:`<div class="kv"><span>Personas</span><span>2</span></div><div class="kv"><span>Fundada</span><span>1935, auténtica cocina valenciana</span></div>
+ <p>Arroz bomba D.O., paella de mariscos, fideuá. Una institución. No se arrepentirán.</p>`,map:"La Barraca Restaurante Madrid"}
+],tips:[
+{e:"🌮",t:"Probar el bocadillo de calamares — hay un sitio famoso junto a Plaza Mayor"},
+{e:"🚣",t:"Barcas en el Retiro: 6 € la barca, hasta 4 personas, 45 min"},
+{e:"🍷",t:"Por la noche: Ponzano u Olavide para tapear de bar en bar"}
+]},
+{d:"2026-08-09",dow:"Domingo",city:"Madrid",note:"¡PRIMER DOMINGO! Vayan a Plaza de Olavide — cañas, mejillones y tapas en Gamberro (terraza).",free:true,sug:"madrid",tips:[
+{e:"🦐",t:"Gamberro (Plaza de Olavide 25) — gambas de Huelva, ensaladilla, croquetas. Terraza."},
+{e:"🛍️",t:"El Rastro en La Latina (9-15h) — el mercadillo más castizo de Madrid, domingos"},
+{e:"🍺",t:"Vermut antes de comer es la tradición dominical — Cava Baja después del Rastro"}
+]},
+{d:"2026-08-10",dow:"Lunes",city:"Madrid",free:true,sug:"madrid",tips:[
+{e:"🎨",t:"Museo del Prado GRATIS de 18:00 a 20:00 — lleguen 30 min antes"},
+{e:"🌿",t:"Parque del Retiro por la mañana (hay sombra) — Palacio de Cristal, gratis"},
+{e:"☕",t:"Café en Ponzano o Alma Fábrica para empezar el día"}
+]},
+{d:"2026-08-11",dow:"Martes",city:"Madrid",free:true,sug:"madrid",tips:[
+{e:"🎭",t:"Museo Reina Sofía GRATIS de 19:00 a 21:00 — el Guernica de Picasso"},
+{e:"🌅",t:"Templo de Debod al atardecer — el mejor sunset de Madrid, gratis"},
+{e:"🍜",t:"Cenar en Katsu (japonesa) o Akiro (sushi) en el barrio"}
+]},
+{d:"2026-08-12",dow:"Miércoles",city:"Madrid",ev:[
+{t:"flight",time:"9:45",end:"4:45+1",title:"Vuelo Guadalajara → Madrid",loc:"Daniel se une al viaje",who:["hermano"],code:"EMUYZD",
+ det:`<div class="kv"><span>Llega</span><span>13 agosto, 4:45 am · T4</span></div><p>Bolt o Uber al depa, ~15 €.</p>`},
+{t:"food",time:"13:15",title:"El Pabellón de Florida Park",loc:"Terraza exterior · Casa de Campo",who:["mama","papa"],
+ det:`<div class="kv"><span>Personas</span><span>2</span></div><div class="kv"><span>Pagado</span><span>Reserva confirmada</span></div>
+ <p>Restaurante con terraza en el Parque Florida Park, dentro de la Casa de Campo. Metro: Lago.</p>`,map:"Florida Park Madrid"},
+{t:"food",time:"20:00",title:"Restaurante Tragaluz",loc:"Madrid · 2 personas",who:["mama","papa"],
+ det:`<div class="kv"><span>Personas</span><span>2 · Mamá y Papá</span></div><div class="kv"><span>Hora</span><span>20:00 — a tiempo para cenar en España</span></div><p>Cena tranquila para dos antes de que llegue Daniel al día siguiente.</p>`}
+],tips:[{e:"🏡",t:"Mientras Daniel vuela: buena tarde para descansar en el depa o explorar el barrio"}]},
+{d:"2026-08-13",dow:"Jueves",city:"Madrid",note:"Daniel llega a las 4:45 am — ya están los tres juntos.",ev:[
+{t:"food",time:"15:00",title:"Los 33 Restaurante",loc:"Plaza de las Salesas 9, Madrid",who:["todos"],
+ det:`<div class="kv"><span>Personas</span><span>3</span></div>`,map:"Los 33 Restaurante Madrid"}
+]},
+{d:"2026-08-14",dow:"Viernes",city:"Madrid",ev:[
+{t:"food",time:"19:15",title:"Roostiq",loc:"Madrid",who:["todos"],
+ det:`<div class="kv"><span>Personas</span><span>3</span></div><p>Las 19:15 es temprano para cenar en España — tendrán el restaurante casi para ustedes solos.</p>`}
+]},
+{d:"2026-08-15",dow:"Sábado",city:"Madrid",note:"Verbenas de San Lorenzo — fiestas en La Latina y Lavapiés. Muy castizo.",free:true,sug:"madrid",ev:[
+{t:"food",time:"20:00",title:"La Máquina Jorge Juan",loc:"Calle Jorge Juan 12, Salamanca",who:["todos"],
+ det:`<div class="kv"><span>Personas</span><span>3</span></div><div class="kv"><span>Precio</span><span>~60-80 € por persona</span></div>
+ <p>Mariscos de primer nivel en el barrio de Salamanca. Ambiente animado. Si hay terraza, pídanla.</p>`,map:"La Máquina Jorge Juan Madrid"}
+]},
+{d:"2026-08-16",dow:"Domingo",city:"Madrid",free:true,sug:"madrid",ev:[
+{t:"food",time:"19:00",title:"The Library Wine Boutique",loc:"Madrid",who:["todos"],
+ det:`<div class="kv"><span>Personas</span><span>3</span></div><div class="kv"><span>Estado</span><span>✅ Confirmada</span></div>
+ <p>Bodega-restaurante: buen vino y cocina cuidada. Tarde de domingo perfecta.</p>`}
+],tips:[{e:"🍺",t:"Vermut por la mañana y cena en The Library"},{e:"🎡",t:"Buen día para el teleférico de Casa de Campo"}]},
+{d:"2026-08-17",dow:"Lunes",city:"Madrid",note:"Preparen maletas hoy. El vuelo de mañana sale a las 6:45 am — salir del depa a las 4:15 am.",free:true,sug:"madrid",tips:[
+{e:"📦",t:"Preparen maletas y compren lo que falte en Mercadona antes de que cierre"},
+{e:"⏰",t:"Despertador a las 3:50 am. Pedir Bolt/Uber desde la app la noche anterior"},
+{e:"📱",t:"¡Hagan check-in online de Ryanair! Si lo hacen en aeropuerto cobran ~55 € extra"}
+]},
+{d:"2026-08-18",dow:"Martes",city:"Madrid → Roma",note:"Día pesado. Madrugada, vuelo y dos visitas. Vayan con calma.",ev:[
+{t:"note",time:"4:15",title:"Salir del depa — Bolt/Uber al aeropuerto",loc:"Larra 3 → Barajas T1",who:["todos"],
+ det:`<div class="alert"><b>¡Ojo!</b> Terminal T1 (Ryanair), NO la T4. Pidan el coche la noche antes.</div>
+ <p>Lleguen a las 4:45 am. Check-in online ya hecho — van directo a seguridad.</p>`},
+{t:"flight",time:"6:45",end:"9:10",title:"Vuelo Madrid → Roma Fiumicino",loc:"Ryanair FR9685 · T1 Barajas",who:["todos"],
+ det:`<p>Códigos: Daniel <b>YVFKFC</b> · Mamá <b>GRMTHL</b> · Papá <b>GRD2RL</b></p>
+ <div class="alert">Ryanair es estricto con el equipaje. Solo entra una bolsa pequeña bajo el asiento si no pagaron maleta.</div>`},
+{t:"note",time:"9:30",title:"De Fiumicino al hotel",loc:"Aeropuerto → Via d'Ascanio 11",who:["todos"],
+ det:`<p><b>Taxi oficial: 55 € fijos</b> (puerta a puerta). Solo taxis blancos "SERVIZIO PUBBLICO". ~45 min.</p>
+ <p>Ignoren a quienes ofrezcan taxi adentro del aeropuerto — cobran el triple.</p>`,map:"Via d Ascanio 11 Roma"},
+{t:"hotel",time:"10:30",title:"Hotel Adriano Rooftop",loc:"Via d'Ascanio 11, Roma",who:["todos"],code:"MR66772100",tel:"+390668802451",
+ det:`<div class="kv"><span>Check-in</span><span>Oficial 3:00 pm · Pueden dejar maletas</span></div>
+ <div class="kv"><span>Desayuno</span><span>Incluido</span></div>
+ <p>Panteón a 3 min, Plaza Navona a 5 min, Fontana di Trevi a 10 min. Todo caminando.</p>`,map:"Hotel Adriano Rooftop Roma"},
+{t:"ticketE",time:"12:45",title:"Castillo de Sant'Angelo + audioguía",loc:"Lungotevere Castello 50",who:["todos"],code:"GYG32L44QA87",
+ det:`<div class="kv"><span>Duración</span><span>2 horas · audioguía en español</span></div>
+ <p>Del hotel: 12 min caminando. La terraza de arriba tiene la mejor vista de Roma.</p>`,map:"Castel Sant Angelo Roma"},
+{t:"ticketE",time:"17:00",title:"Panteón + audioguía oficial",loc:"Recoger en: Via dei Bergamaschi 49",who:["todos"],code:"GYGKBF9BZQW8",
+ det:`<div class="alert"><b>PRIMERO recojan el boleto físico</b> en la tienda OhMyGuide (Via dei Bergamaschi 49). Lleguen a las 16:30. Llevar ID física.</div>
+ <p>Párence bajo el óculo y miren hacia arriba.</p>`,map:"Via dei Bergamaschi 49 Roma"}
+]},
+{d:"2026-08-19",dow:"Miércoles",city:"Roma",note:"Día de la Audiencia Papal. Madrugen — vale la pena llegar temprano.",ev:[
+{t:"papal",time:"7:30",title:"Audiencia Papal · Papa León XIV",loc:"Plaza de San Pedro, Vaticano",who:["todos"],
+ det:`<div class="alert"><b>En agosto NO se necesitan boletos.</b> Visitantes individuales entran libre. Solo presentarse.</div>
+ <div class="kv"><span>Llegar</span><span>7:30–8:00 am</span></div><div class="kv"><span>Empieza</span><span>10:00 am</span></div>
+ <div class="kv"><span>Dónde</span><span>Plaza de San Pedro (si hace calor, moverán al Aula Pablo VI)</span></div>
+ <p><b>Lleven:</b> gorra, bloqueador, agua. Vestimenta cubierta (hombros y rodillas).</p>
+ <p><b>Papa León XIV:</b> Robert Francis Prevost, primer papa estadounidense y agustino. Habla español perfectamente.</p>`,map:"Piazza San Pietro Vaticano"},
+{t:"food",time:"20:30",title:"Life Ristorante",loc:"Roma",who:["todos"],
+ det:`<div class="kv"><span>Personas</span><span>3</span></div><p>El "coperto" (~2 € por persona) es normal en Italia, no es estafa.</p>`}
+]},
+{d:"2026-08-20",dow:"Jueves",city:"Roma",note:"Día completo en el Vaticano. Ropa que cubra hombros y rodillas obligatorio.",ev:[
+{t:"ticketE",time:"9:15",title:"Museos Vaticanos + Capilla Sixtina",loc:"Viale Vaticano · guía en español",who:["todos"],code:"GYG83XKGN2Z8",
+ det:`<div class="kv"><span>Duración</span><span>3 horas · Proveedor: Enjoy Rome</span></div>
+ <p>En la Capilla Sixtina: <b>prohibido fotos y hablar.</b></p>
+ <div class="alert">Vestimenta obligatoria: hombros y rodillas cubiertos. Sin esto no entran.</div>`,map:"Musei Vaticani Roma"},
+{t:"ticketE",time:"14:00",end:"15:00",title:"Necrópolis Vaticana (Scavi)",loc:"Entrada: Via Paolo VI",who:["todos"],code:"UACD-6S9Q",
+ det:`<div class="kv"><span>Llegar</span><span>13:30 (30 min antes)</span></div>
+ <div class="kv"><span>Pagado</span><span>60 € (3 personas)</span></div>
+ <div class="alert">Sin mochilas ni bolsas grandes. Llevar pasaporte.</div>`,map:"Via Paolo VI Roma"}
+]},
+{d:"2026-08-21",dow:"Viernes",city:"Roma",free:true,sug:"roma",note:"Día libre en Roma. Perfecto para el Coliseo (reserven hora en línea).",tips:[
+{e:"🏟️",t:"Coliseo + Foro Romano: compren el boleto online (18€, reserva de hora obligatoria)"},
+{e:"🍕",t:"Pizza al taglio en Antico Forno Roscioli (Via dei Chiavari 34) — la mejor de Roma"},
+{e:"⛲",t:"Fontana di Trevi de noche — sin multitudes y con buena luz"},
+{e:"🌙",t:"Cena en Trastevere — el barrio más bonito de Roma de noche"}
+]},
+{d:"2026-08-22",dow:"Sábado",city:"Roma → Venecia",note:"Madrugar otra vez. El tren no espera.",ev:[
+{t:"hotel",time:"6:00",title:"Check-out y taxi a Termini",loc:"Via d'Ascanio → Roma Termini",who:["todos"],
+ det:`<p>Taxi ~10-15 €, 15 min. Salir a las 6:00 am. El andén se anuncia en pantallas 15-20 min antes. Busquen "Frecciarossa 9406".</p>`},
+{t:"train",time:"7:05",end:"11:34",title:"Frecciarossa Roma → Venezia S.Lucia",loc:"Frecciarossa 9406 · 1ª Business",who:["todos"],code:"EWK5AN",
+ det:`<div class="kv"><span>Coche</span><span>2 · Zona Silenzio</span></div>
+ <div class="kv"><span>Asientos</span><span>Daniel 7D · Mamá 7B · Papá 7A</span></div>
+ <p>Al llegar a Venecia Santa Lucia: 5-8 min caminando al hotel. No necesitan vaporetto.</p>`,map:"Roma Termini"},
+{t:"hotel",time:"12:00",title:"Hotel Olimpia Venice",loc:"Santa Croce 395, Venecia",who:["todos"],code:"5289593485",tel:"+39041711041",
+ det:`<div class="kv"><span>Check-in</span><span>2:00 pm (dejen maletas)</span></div>
+ <div class="kv"><span>NIP</span><span>0900</span></div><div class="kv"><span>Desayuno</span><span>Incluido</span></div>
+ <p>Ya pagado. 🥂 Anotaron que es su aniversario.</p>`,map:"Hotel Olimpia Venice Venezia"},
+{t:"ticketE",time:"13:30",title:"Palacio Ducal + Basílica San Marcos",loc:"Piazza San Marco · audioguía español",who:["todos"],code:"GYGX7M965QLG",
+ det:`<div class="kv"><span>Duración</span><span>2 horas · Proveedor: Crown Tours</span></div>
+ <div class="alert">Vestimenta cubierta para la Basílica. Sin mochilas grandes.</div>`,map:"Palazzo Ducale Venezia"}
+]},
+{d:"2026-08-23",dow:"Domingo",city:"Venecia",free:true,sug:"venecia",note:"Día libre completo en Venecia. Ideal para Murano y Burano.",tips:[
+{e:"🏝️",t:"Murano (10 min en vaporetto) + Burano (40 min) — el plan perfecto"},
+{e:"🥂",t:"Cicchetti en Bacareto da Lele al llegar — el bacaro más auténtico junto a la estación"},
+{e:"🚤",t:"Traghetto: cruzar el Gran Canal de pie por 2 € — la versión local de la góndola"},
+{e:"🌊",t:"Pase de vaporetto 24h (25€) si van a las islas — conviene vs boletos sueltos"}
+]},
+{d:"2026-08-24",dow:"Lunes",city:"Venecia → Madrid",ev:[
+{t:"hotel",time:"10:00",title:"Check-out y bus al aeropuerto",loc:"Hotel → Piazzale Roma → Marco Polo",who:["todos"],
+ det:`<p>De Piazzale Roma: <b>Bus ATVO Express: 10 €, 20 min, directo</b>. Salida ~10:20-10:40am. El pase de vaporetto NO sirve.</p>`},
+{t:"flight",time:"13:40",end:"16:20",title:"Vuelo Venecia → Madrid",loc:"Ryanair · Marco Polo",who:["todos"],
+ det:`<p>Papás: <b>W6Z7XA</b> · Daniel: <b>Q4Q73N</b></p><p>Del aeropuerto de Madrid al depa: Bolt/Uber ~15 €.</p>`}
+]},
+{d:"2026-08-25",dow:"Martes",city:"Madrid",free:true,sug:"madrid",tips:[
+{e:"🎨",t:"Thyssen-Bornemisza si no lo visitaron — Renoir, Van Gogh, Hopper"},
+{e:"🌳",t:"Parque del Retiro por la mañana antes del calor"},
+{e:"🍻",t:"Ponzano para tapear al atardecer — el mejor plan de barrio"}
+]},
+{d:"2026-08-26",dow:"Miércoles",city:"Madrid",free:true,sug:"madrid",tips:[
+{e:"🚂",t:"Escapada a Toledo (33 min en AVE desde Atocha) — la ciudad de las tres culturas"},
+{e:"🏰",t:"O Segovia (30 min en AVE) — acueducto romano + alcázar de cuento"},
+{e:"☕",t:"Desayuno en Maanna o Hanso (las cafeterías cool de Chamberí)"}
+]},
+{d:"2026-08-27",dow:"Jueves",city:"Madrid",ev:[
+{t:"food",time:"20:00",title:"Taberna Jam · Cocina libanesa",loc:"Madrid · Sala",who:["todos"],
+ det:`<div class="kv"><span>Personas</span><span>3</span></div><p>Cocina libanesa en formato taberna. Pidan varios platos para compartir.</p>`}
+],tips:[{e:"🛍️",t:"Salamanca (Serrano) si quieren pasear por la zona más elegante de Madrid"},{e:"🌅",t:"Templo de Debod al atardecer si todavía no lo han hecho"}]},
+{d:"2026-08-28",dow:"Viernes",city:"Madrid",free:true,sug:"madrid",note:"Último día completo. Compren recuerdos y armen maletas.",tips:[
+{e:"🛍️",t:"Último día de compras — Fuencarral, Malasaña o Salamanca"},
+{e:"🍷",t:"Cena de despedida a su elección"},
+{e:"📦",t:"Armar maletas y dejar todo listo para mañana"}
+]},
+{d:"2026-08-29",dow:"Sábado",city:"Madrid → GDL",note:"Vuelo de regreso. Salgan del depa a las 11:30 am.",ev:[
+{t:"flight",time:"14:35",end:"18:35",title:"Vuelo Madrid → Guadalajara",loc:"Barajas T4 · Los tres juntos",who:["todos"],code:"LJFCQW",
+ det:`<div class="kv"><span>Salir del depa</span><span>11:30 am</span></div><div class="kv"><span>Terminal</span><span>T4</span></div>
+ <p>Bolt/Uber al aeropuerto: ~15 €. Pregunten por el Tax Free si compraron cosas caras.</p>
+ <p>Buen viaje de regreso. 🧡 ¡Qué viaje se van a dar!</p>`}
+]}
+];
+</script>
+
+<script>
+const MADRID=[
+
+/* ===================== EN MI BARRIO ===================== */
+{cat:"En mi barrio",name:"Plaza de Olavide 🌟 Favorita de Camila",tag:"Lo mejor de Chamberí · 10 min a pie",
+ story:"La plaza circular más querida de Chamberí — y el lugar favorito de Camila en Madrid. Restaurantes, cafés, postres, terrazas y mucha vida de barrio. En agosto, la tarde perfecta.",
+ f:{"Dónde":"Plaza de Olavide · 10 min caminando","Gamberro":"Gambas de Huelva, ensaladilla · terraza · €€","Hay de todo":"Cafés, helados, terrazas, Toma Café 2","Mejor hora":"12h para vermut · tarde para café"},
+ tip:"Primer domingo: Gamberro a las 12:30. Ensaladilla gamberra y croquetas de jamón. Después helado en Loli Gelato.",map:"Plaza de Olavide Madrid"},
+{cat:"En mi barrio",name:"Supermercados",tag:"Todo cerca del depa",
+ story:"Tienen opciones muy cercanas para la compra grande, el día a día y las emergencias del domingo.",
+ f:{"Mercadona":"Fuencarral 77 · 12 min · L-S 9-21:30 · CIERRA DOMINGOS · el más completo","El Dia":"Blasco de Garay 28 · casi en la esquina · lo básico del día pero cumple · abre casi todos los días","Carrefour Express":"Fuencarral 158 y Manuel Silvela · más cerca · abre domingos","Consejo":"El Dia para el día a día; Mercadona para compra grande entre semana"},
+ tip:"El Dia está casi en la esquina de Larra 3 — perfecto para lo de cada día. Los domingos cuando Mercadona cierra, El Dia o Carrefour.",map:"Supermercado El Dia Blasco de Garay Madrid"},
+{cat:"En mi barrio",name:"Cajero sin comisión · Gran Café Santander",tag:"Sacar dinero sin pagar de más",
+ story:"El Gran Café Santander (Plaza de Santa Bárbara 4) tiene cajero del Banco Santander sin comisión para tarjetas extranjeras. A 6 min a pie de Larra 3.",
+ f:{"Dónde":"Plaza de Santa Bárbara 4 · metro Alonso Martínez","Evitar":"Cajeros amarillos Euronet (cobran hasta 5 € extra)","Truco":"Siempre elegir cobrar en EUROS, nunca en pesos"},
+ tip:"Cuando el cajero pregunte pesos o euros, siempre EUROS. La conversión automática a pesos es una estafa legal.",map:"Gran Cafe Santander Madrid"},
+{cat:"En mi barrio",name:"Calle Ponzano · El tapeo de Chamberí",tag:"40+ bares en una sola calle · 10 min",
+ story:"'Ponzaning' es ya un verbo madrileño. La calle más animada de Chamberí con más de 40 bares de tapas. Tiene de todo: Sala de Despiece, Toma Café, bares de vinos, vermut, cócteles.",
+ f:{"Dónde":"Calle Ponzano · metro Alonso Cano","Mejor hora":"De 20:00 en adelante","Precio":"Tapa 4–12 €","Luna y Wanda":"Ponzano 55 · tartas de queso"},
+ tip:"No reserven: la gracia es entrar, tomar algo y cambiarse al siguiente. Si un bar está vacío a las 21h en Ponzano, por algo será.",map:"Calle Ponzano Madrid"},
+{cat:"En mi barrio",name:"Mercado de San Antón",tag:"Como San Miguel pero local",
+ story:"El Mercado de San Antón es lo que el Mercado de San Miguel querría ser: sin turistas, con gente del barrio, comida del mundo y terraza con rooftop. Genuinamente local.",
+ f:{"Dónde":"Calle Augusto Figueroa 24, Chueca · 15 min","Horario":"L-J 10-22h · V-S 10-24h · D 10-22h","Hay":"Puestos de comida del mundo, tapas, rooftop","Precio":"€€"},
+ tip:"Subid hasta el rooftop para tomar algo con vistas. Buena opción para una comida rápida de calidad sin reserva.",map:"Mercado de San Anton Madrid"},
+{cat:"En mi barrio",name:"Iglesias cercanas · Misas",tag:"Para el domingo",
+ story:"Chamberí tiene varias iglesias históricas muy bonitas. La más cercana y bonita es Santa Bárbara, el panteón de Fernando VI. La Hispanoamericana tiene ambiente más familiar.",
+ f:{"Santa Bárbara":"C. General Castaños 2 · 5 min · misa en español · confirmar horarios","Parroquia Hispanoamericana":"C. Edgar Neville 23 · ambiente latinoamericano · misas 10-21h","Web":"parroquiadesantabarbara.com"},
+ tip:"Para ambiente más parecido al de México: Parroquia Hispanoamericana de la Merced. Muchas misas los domingos.",map:"Parroquia Santa Barbara Madrid"},
+{cat:"En mi barrio",name:"Calles clave · Orientación",tag:"A dónde llegan en 15 min caminando",
+ story:"Calle de Larra está en el cruce perfecto: en 15 min llegan a Malasaña, Chueca, Gran Vía o el centro de Chamberí.",
+ f:{"Fuencarral":"→ Tribunal → Gran Vía → Sol (peatonal, tiendas)","Hortaleza":"→ atraviesa Chueca (ambiente y bares)","Sagasta":"→ Bilbao → Alonso Martínez (bulevar elegante)","Alburquerque":"→ Plaza de Olavide directamente (10 min)"},
+ tip:"Para el Retiro: metro desde Bilbao (L1). Para Sol: L1 directa desde Bilbao o Tribunal. Para Malasaña: andando por Fuencarral.",map:"Calle de Larra 3 Madrid"},
+{cat:"En mi barrio",name:"Bodega La Ardosa · La Violeta",tag:"Tabernas de barrio históricas",
+ story:"La Ardosa (C. Colón 13): taberna centenaria con uno de los mejores vermuts de Madrid, excelentes croquetas y patatas bravas. La Violeta (C. Santa Engracia 70): 30 referencias de vermut, muy de barrio.",
+ f:{"La Ardosa":"C. Colón 13, Chamberí · centenaria · vermut de barril","La Violeta":"C. Santa Engracia 70 · 30 referencias de vermut · muy local","Precio":"€","Mejor hora":"Mediodía para el vermut dominical"},
+ tip:"El vermut del mediodía del domingo en La Ardosa es una institución del barrio. Pidan las patatas bravas.",map:"Bodega La Ardosa Madrid"},
+
+/* ===================== SOLO CAFÉ & TÉ ===================== */
+{cat:"Solo café & té",name:"Toma Café (Plaza Olavide)",tag:"El mejor café de Chamberí",
+ story:"El pionero del café de especialidad en Madrid (desde 2012). El local de la Plaza de Olavide es el favorito del barrio: más amplio, luz natural y ambiente tranquilo.",
+ f:{"Dónde":"Plaza de Santa Bárbara / Plaza Olavide · Chamberí","Precio":"€","Especialidad":"Café de tueste propio, flat white, filtrado","Otro local":"C. de la Palma 49, Malasaña (el original)"},
+ tip:"Para los que se toman el café en serio. Pidan que les recomienden el método del día. El de la Plaza Olavide tiene más espacio.",map:"Toma Cafe Chamberí Madrid"},
+{cat:"Solo café & té",name:"Kohi Matcha Café",tag:"Matcha y café japonés · Chamberí",
+ story:"Cafetería especializada en matcha y métodos de extracción japoneses. El matcha latte frío en verano es imbatible.",
+ f:{"Dónde":"C. Bretón de los Herreros 35, Chamberí","Precio":"€","Especialidad":"Matcha latte, tés japoneses, filtrado"},
+ tip:"El matcha latte frío en agosto es una joya. Si les gusta el matcha, este es el sitio.",map:"Kohi Matcha Cafe Madrid"},
+{cat:"Solo café & té",name:"Crema",tag:"Café de especialidad · Chamberí",
+ story:"De las cafeterías de tercera ola más queridas del barrio. Granos de origen, extracción cuidada. Para quienes se toman el café en serio.",
+ f:{"Tipo":"Café de especialidad","Precio":"€","Zona":"Chamberí"},
+ tip:"Para sentarse con calma antes de empezar el día. Lleguén temprano — se llena de trabajadores.",map:"Crema cafe Madrid"},
+{cat:"Solo café & té",name:"Rebel Café",tag:"Cafés y zumos caseros · Ponzano",
+ story:"En pleno Ponzano, Rebel Café destaca por sus cafés de calidad, zumos caseros y tostadas de aguacate. Buen ambiente de barrio.",
+ f:{"Dónde":"C. Ponzano, Chamberí","Precio":"€","Especialidad":"Cafés y zumos naturales"},
+ tip:"Buena parada de media mañana en el corazón de Ponzano.",map:"Rebel Cafe Ponzano Madrid"},
+{cat:"Solo café & té",name:"Saint Georges Café",tag:"Café estilo australiano · Modesto Lafuente",
+ story:"Pequeño local de estilo australiano en el barrio de Chamberí. Café cuidado, ambiente minimalista y tranquilo.",
+ f:{"Dónde":"C. Modesto Lafuente 6, Chamberí","Precio":"€","Vibe":"Pequeño, minimalista, australiano"},
+ tip:"Muy tranquilo entre semana por la mañana. Ideal para el café antes de empezar el día.",map:"Saint Georges Cafe Madrid"},
+{cat:"Solo café & té",name:"Naji Specialty Coffee",tag:"Café de autor · Chamberí",
+ story:"Café de especialidad con repostería casera en Chamberí. Buen café, buen trato y ambiente acogedor.",
+ f:{"Dónde":"C. Modesto Lafuente 3, Chamberí","Precio":"€","Especialidad":"Café de autor, repostería"},
+ tip:"Justo al lado de Saint Georges — ambos son buena parada en la misma calle.",map:"Naji Specialty Coffee Madrid"},
+{cat:"Solo café & té",name:"Wilko Coffee",tag:"Café y repostería artesana · Santa Engracia",
+ story:"Café de especialidad con repostería artesana en la calle Santa Engracia. Ambiente acogedor y buen producto.",
+ f:{"Dónde":"C. Santa Engracia 33, Chamberí","Precio":"€","Especialidad":"Café de especialidad y repostería"},
+ tip:"Buena opción de camino a cualquier punto de Chamberí.",map:"Wilko Coffee Madrid"},
+{cat:"Solo café & té",name:"Arya Café",tag:"Cafés Noma y brunch · Plaza Cristo Rey",
+ story:"Cafetería con café de calidad y brunch sin horario fijo. Ambiente tranquilo en la zona de Chamberí cerca de Argüelles.",
+ f:{"Dónde":"Plaza Cristo Rey 3, Chamberí","Precio":"€","Vibe":"Tranquilo, sin horario fijo de brunch"},
+ tip:"Buena opción si están cerca de Argüelles o Plaza de España.",map:"Arya Cafe Madrid"},
+{cat:"Solo café & té",name:"Faraday",tag:"Referencia de café de especialidad",
+ story:"Una de las referencias del café de especialidad en Madrid. Baristas que conocen el producto y granos seleccionados con criterio.",
+ f:{"Precio":"€","Zona":"Chamberí","Especialidad":"Métodos de filtrado, extracción precisa"},
+ tip:"Para los más aficionados al café. Pidan qué tienen hoy de filtrado.",map:"Faraday cafe Madrid"},
+{cat:"Solo café & té",name:"Maanna",tag:"Café, smoothies y plant-based",
+ story:"Cafetería luminosa, muchas plantas, café de calidad y propuesta plant-based. Muy popular en el barrio. Entre semana es más tranquila que el fin de semana.",
+ f:{"Precio":"€€","Zona":"Alonso Martínez / Chamberí","Especialidad":"Café, smoothies, bowls"},
+ tip:"Entre semana para desayunar tranquilos. El fin de semana tiene cola.",map:"Maanna Madrid"},
+{cat:"Solo café & té",name:"Zefir · Acid Café",tag:"Más cafeterías de especialidad",
+ story:"Zefir: cafetería artesanal pequeña y acogedora. Acid: enfocada en café ácido y métodos técnicos — para los que quieren explorar más allá del espresso.",
+ f:{"Zefir":"C. Chamberí · íntimo · café artesanal","Acid":"Café de especialidad técnico · zona Las Letras","Precio":"€ en ambas"},
+ tip:"Acid es para los ya fans del café de especialidad. Pidan que les expliquen el proceso.",map:"Zefir cafe Madrid"},
+{cat:"Solo café & té",name:"Federal Café · La Bicicleta",tag:"Brunch australiano y café · Tribunal",
+ story:"Federal Café (Plaza de las Comendadoras): estilo australiano, brunch generoso, pet-friendly. La Bicicleta (Plaza de San Ildefonso, Malasaña): moderno, con coworking y buen ambiente.",
+ f:{"Federal Café":"Plaza Comendadoras, Tribunal · brunch australiano · €€","La Bicicleta":"Plaza de San Ildefonso, Malasaña · coworking · €","Horario":"Mañanas y mediodías"},
+ tip:"Federal Café: llegar temprano los fines de semana. La Bicicleta: para trabajar o leer tranquilos.",map:"Federal Cafe Madrid"},
+
+/* ===================== DESAYUNOS & BRUNCH ===================== */
+{cat:"Desayunos & brunch",name:"Bocado",tag:"Restaurante de desayunos · imprescindible",
+ story:"Bocado es uno de los restaurantes más queridos de Madrid para desayunar. Propuesta generosa, ingredientes de calidad, ambiente relajado. No es un café — es un desayuno de verdad, con carta completa.",
+ f:{"Tipo":"Restaurante de desayunos y brunch","Precio":"€€","Especialidad":"Desayunos completos con carta","Zona":"Madrid centro"},
+ tip:"Si un día quieren darse un desayuno especial, Bocado es el lugar. Reserven o lleguen temprano.",map:"Bocado restaurante desayunos Madrid"},
+{cat:"Desayunos & brunch",name:"Hanso · Osom · Bucólico",tag:"Las cafeterías cool del barrio",
+ story:"Hanso: brunch y café, muy conocido en el circuito cool. Osom: cafetería acogedora, ambiente íntimo. Bucólico: propuesta natural y saludable. Las tres son del circuito Chamberí-Malasaña.",
+ f:{"Hanso":"Brunch y café · €€ · se llena fines de semana","Osom":"Íntima, de barrio · €","Bucólico":"Natural y saludable · €€","Zona":"Chamberí y Malasaña"},
+ tip:"Para el brunch del fin de semana: lleguen temprano a Hanso. Entre semana es mucho más tranquila.",map:"Hanso cafe Madrid"},
+{cat:"Desayunos & brunch",name:"Gran Café Santander",tag:"Desayunos españoles de toda la vida · Plaza Santa Bárbara",
+ story:"El Gran Café Santander (Grupo Cañadío) en la Plaza de Santa Bárbara es el café bistró español más querido del barrio. Desde las churros del desayuno hasta la tortilla de patata. Solo a 6 min del depa.",
+ f:{"Dónde":"Plaza de Santa Bárbara 4 · metro Alonso Martínez","Precio":"€€","Especialidad":"Churros, tortilla, croquetas, cheesecake","Horario":"Todo el día"},
+ tip:"⚠️ Hay cafeterías genéricas 'Santander' no relacionadas — la buena es esta de Plaza de Santa Bárbara. También tienen el cajero sin comisión aquí.",map:"Gran Cafe Santander Plaza Santa Barbara Madrid"},
+{cat:"Desayunos & brunch",name:"Cuadra · Natif · La Papa",tag:"Más desayunos del barrio",
+ story:"Cuadra (C. Cardenal Cisneros 40): pan de autor, ambiente de barrio. Natif: brunch curado, muy instagrameable. La Papa: desayunos y bocados sencillos bien hechos.",
+ f:{"Cuadra":"C. Cardenal Cisneros 40 · pan de autor · €","Natif":"Brunch curado · €€ · entre semana mejor","La Papa":"Desayunos simples bien hechos · €"},
+ tip:"Natif tiene lista de espera los fines de semana. Cuadra es perfecta para un desayuno tranquilo entre semana.",map:"Cuadra cafe Chamberí Madrid"},
+{cat:"Desayunos & brunch",name:"Oryen · Brunch & Cake · Casa OM",tag:"Desayunos en Salamanca",
+ story:"Para cuando estén por el barrio de Salamanca o el Retiro. Oryen (C. Juan Bravo 43): café de especialidad y brunch saludable muy valorado. Brunch & Cake (C. Hermosilla 94): repostería creativa. Casa OM (C. Serrano 91): cafetería de especialidad premiada.",
+ f:{"Oryen":"C. Juan Bravo 43 · brunch saludable · €€","Brunch & Cake":"C. Hermosilla 94 · repostería y brunch · €€","Casa OM":"C. Serrano 91 · café de especialidad galardonado"},
+ tip:"Oryen destaca mucho en prensa y redes de Madrid. Si van por Salamanca, es parada obligada.",map:"Oryen Cafe Juan Bravo Madrid"},
+{cat:"Desayunos & brunch",name:"Honest Greens",tag:"Saludable desde el desayuno · varios locales",
+ story:"Cadena de cocina saludable fast-casual que abre desde las 8:30 entre semana para desayunar. Bowls, platos de mercado, todo fresco. Varios locales: Castellana 89, Gran Vía 7, Hortaleza 100.",
+ f:{"Precio":"€€ · sin reserva","Horario":"Desde ~8:30 entre semana","Especialidad":"Garden bowls, patatas trufadas, desayunos saludables"},
+ tip:"Buena parada de mediodía o desayuno tardío. La versión española del brunch saludable sin pretensiones.",map:"Honest Greens Madrid"},
+{cat:"Desayunos & brunch",name:"La Fragua de Sebín",tag:"Desde el desayuno · Malasaña",
+ story:"La Fragua de Sebín (C. del Divino Pastor 21, Malasaña) abre desde las 8:00 con desayunos y tiene cocina de fusión mediterránea para el resto del día. A poca distancia de Larra 3.",
+ f:{"Dónde":"C. del Divino Pastor 21, Malasaña","Precio":"€€","Horario":"Desde ~8:00","Especialidad":"Desayunos, taco de salmón, solomillo"},
+ tip:"Para los días que quieran algo diferente para desayunar con más sustancia.",map:"La Fragua de Sebin Madrid"},
+
+/* ===================== POSTRES & HELADOS ===================== */
+{cat:"Postres & helados",name:"Luna y Wanda 🧀",tag:"LA tarta de queso de Madrid",
+ story:"Luna y Wanda son especialistas en tartas de queso — no es heladería. La cheesecake de 3 quesos sobre galleta María es legendaria en Madrid. Ponzano 55 está a pasos de la calle.",
+ f:{"Dónde":"Ponzano 55 · Ferraz 92 · Belén 2","Precio":"€€","Especialidad":"Tarta de queso de 3 quesos · edición pistacho","Aviso":"Se agotan a diario — ir temprano"},
+ tip:"Encarguen con antelación si pueden. La edición de pistacho cuando la tienen es increíble.",map:"Luna y Wanda Ponzano Madrid"},
+{cat:"Postres & helados",name:"Loli Gelato",tag:"Gelato artesanal italiano",
+ story:"Heladería artesanal en C. Palafox 16 (metro Bilbao). Muy cerca de Plaza Olavide y de Larra 3. El gelato de pistacho es uno de los mejores de Madrid.",
+ f:{"Dónde":"C. de Palafox 16, Chamberí","Precio":"€ · tarrina 4-6 €","Horario":"12:00–00:00 (V-S hasta 01:00)"},
+ tip:"El pistacho de color beige natural (no verde fosforescente) es el bueno. En agosto el antídoto perfecto al calor.",map:"Loli Gelato Madrid"},
+{cat:"Postres & helados",name:"Myka Greek Frozen Yogurt",tag:"Yogur helado griego · no es heladería",
+ story:"Myka es una cadena de yogur helado griego estilo griego — como el frozen yogurt pero de verdad. Locales en José Ortega y Gasset 44, San Lucas 21 y Ponzano 11. Ligero y muy refrescante en agosto.",
+ f:{"Dónde":"Ponzano 11 · J. Ortega y Gasset 44 · San Lucas 21","Precio":"€ · tarrina 3,40-5,40 €","Tipo":"Yogur helado, NO heladería"},
+ tip:"Perfecto para la tarde de calor. Mucho más ligero que un helado. Los toppings de frutos secos están muy bien.",map:"Myka yogur helado Madrid"},
+{cat:"Postres & helados",name:"Kalúa Helado Artesanal",tag:"Heladería artesanal · Fuencarral",
+ story:"Heladería artesanal muy popular en C. Fuencarral 131. Suele tener cola con sistema de número en verano. También hace gofres y tartas en tarro.",
+ f:{"Dónde":"C. Fuencarral 131, Chamberí · también Ibiza 21","Precio":"€","Especialidad":"Gelato artesanal, gofres, tartas en tarro"},
+ tip:"En agosto hay cola — tomen número y esperen, vale la pena. El de chocolate negro y el de avellana son los más pedidos.",map:"Kalua Helado Artesanal Fuencarral Madrid"},
+{cat:"Postres & helados",name:"Mistura Ice Cream",tag:"Helado sobre placa de cuarzo",
+ story:"Cadena con varios locales (Augusto Figueroa 5, Ciudad Rodrigo 6, Goya 50...). Su técnica especial es mezclar el helado sobre placa de cuarzo con ingredientes al gusto. También opciones veganas.",
+ f:{"Precio":"€","Varios locales":"Augusto Figueroa 5 · Ciudad Rodrigo 6 · Goya 50","Opciones":"Veganas y sin azúcar"},
+ tip:"Entrar y pedir para verlo hacer — es parte de la experiencia. El sorbete de chocolate negro vegano es muy bueno.",map:"Mistura Ice Cream Madrid"},
+{cat:"Postres & helados",name:"Mamá Framboise · Harina · Mallorca",tag:"Pastelerías de Madrid",
+ story:"Mamá Framboise (Barrio de Salamanca): pastelería fina con tartas de autor y petit fours. Harina (Chamberí): pastelería dulce y salada de estilo castizo. Pastelería Mallorca (varios): clásica, famosa por el 'Manolito' de avellana.",
+ f:{"Mamá Framboise":"Salamanca · pastelería fina · €€","Harina":"Chamberí · dulce y salada · €","Pastelería Mallorca":"Varios locales · clásica · Manolito de avellana · €"},
+ tip:"Mallorca es el regalo perfecto para llevar a quien les hospeda — la caja de Manolitos de avellana es un clásico.",map:"Pasteleria Mallorca Madrid"},
+{cat:"Postres & helados",name:"Giangrossi · Veneta · La Romana",tag:"Heladeros italianos de Madrid",
+ story:"Giangrossi (C. Cea Bermúdez 29): helados de obrador italiano muy valorados. Heladería Veneta (C. Carmen 15, Sol): napolitana clásica, elegida 5ª mejor heladería del mundo en 2024. La Romana: varios locales, cremosa.",
+ f:{"Giangrossi":"C. Cea Bermúdez 29 · muy cerca del depa","Veneta":"C. Carmen 15, Sol · napolitana · 5ª del mundo","La Romana":"Varios locales · cremosa y clásica"},
+ tip:"Giangrossi está muy cerca del depa (Cea Bermúdez). Veneta si van por Sol. La Romana en cualquier punto del centro.",map:"Giangrossi gelato Madrid"},
+
+/* ===================== TAPAS & GILDAS ===================== */
+{cat:"Tapas & gildas",name:"Sala de Despiece (SDD1)",tag:"La mejor barra de tapas de Ponzano",
+ story:"Ponzano 11. Tapas creativas de producto en barra, el concepto más original de Chamberí. El 'Rolex' (yema, panceta, foie, trufa y sauternes) es el plato estrella. Reserva recomendada.",
+ f:{"Dónde":"C. Ponzano 11, Chamberí","Precio":"€€-€€€ · ~30-40 €","Reserva":"Recomendada · local pequeño","Especialidad":"El Rolex, cocina de temporada en barra"},
+ tip:"Sentarse al final de la barra para ver la preparación. En pleno Ponzano — combinen con otros bares de la calle.",map:"Sala de Despiece Ponzano Madrid"},
+{cat:"Tapas & gildas",name:"Gilda House · Gonzalín",tag:"Gildas y pintxos vascos",
+ story:"Gilda House (Chamberí) especializado en gildas al estilo vasco: oliva + anchoa + guindilla + txakoli. Gonzalín (C. Santa Engracia 50) es el bar de gildas de barrio más conocido.",
+ f:{"Gilda House":"Chamberí · especialidad en gildas","Gonzalín":"C. Santa Engracia 50 · pintxos de barrio","Precio":"€ · gilda ~1,50-2,50 €"},
+ tip:"Una gilda con un txakoli (vino blanco vasco) frío es la combinación perfecta. Para picar antes de cenar.",map:"Gilda House Madrid"},
+{cat:"Tapas & gildas",name:"El Tigre",tag:"Tapas GRATIS con la bebida · imprescindible",
+ story:"El Tigre (C. de las Infantas / El Español, Malasaña) es legendario: cada bebida viene con una bandeja enorme de tapas gratis — calamares, tortilla, croquetas, patatas. Imprescindible.",
+ f:{"Dónde":"C. de las Infantas, Malasaña · cerca de Gran Vía","Precio":"€ · solo pagas la bebida","Especialidad":"Tapas gratis incluidas · calamares, croquetas"},
+ tip:"Pidan una caña (~3 €) y llega una bandeja de tapas gratis. El sitio más generoso de Madrid. Siempre lleno — hay que apretarse.",map:"El Tigre bar Madrid"},
+{cat:"Tapas & gildas",name:"Casa Dani · La tortilla de Madrid",tag:"La mejor tortilla · Mercado Ibiza",
+ story:"Casa Dani dentro del Mercado de la Paz (C. Ayala 28, Salamanca). Ganadora del Campeonato de España de Tortilla. La hacen jugosa por dentro con patata agria manchega y aceite de girasol.",
+ f:{"Dónde":"Mercado de la Paz, C. Ayala 28, Salamanca","Precio":"€ · pincho ~3-4 €","Horario":"~7-20h L-V · S hasta ~17h · CERRADO domingos","Aviso":"Siempre hay cola"},
+ tip:"Ir a horas valle (9-11h o 16-18h). La tortilla viene jugosa por dentro — si la quieren más cuajada, lo dicen al pedir.",map:"Casa Dani tortilla Mercado de la Paz Madrid"},
+{cat:"Tapas & gildas",name:"Taberna La Carmencita · El Doble",tag:"Tabernas castizas del barrio",
+ story:"La Carmencita (C. Santa Feliciana 4): una de las tabernas más antiguas de Madrid, cocina tradicional en ambiente histórico. El Doble (C. Ríos Rosas 17): famoso por sus cañas dobles y sus tapas clásicas.",
+ f:{"La Carmencita":"C. Santa Feliciana 4 · taberna histórica","El Doble":"C. Ríos Rosas 17 · cañas dobles + tapas clásicas","Precio":"€ en ambas"},
+ tip:"La Carmencita es de las pocas tabernas del siglo XIX que quedan intactas. El Doble: pedir la caña doble con la tapa que venga.",map:"Taberna La Carmencita Madrid"},
+{cat:"Tapas & gildas",name:"Mawey · Shawa",tag:"Mexicana y libanesa informal",
+ story:"Mawey (C. Santa Engracia 16): taquería mexicana moderna, de las pocas con sabores auténticos en Madrid. Shawa (C. Fernández de la Hoz 53): shawarma libanés de slow food.",
+ f:{"Mawey":"C. Santa Engracia 16 · taquería moderna · €€","Shawa":"C. Fernández de la Hoz 53 · shawarma · €","Precio":"€-€€ en ambas"},
+ tip:"Mawey es la taquería mexicana más recomendada por locales en Madrid. Los tacos al pastor están buenos.",map:"Mawey taqueria Madrid"},
+
+/* ===================== PARA COMER ===================== */
+{cat:"Para comer",name:"La Barraca",tag:"Paella valenciana · RESERVADA 8 AGO",booked:"Reservada · 8 ago 14:00 · 2 pax",
+ story:"Fundada en 1935. La paella de Madrid: arroz bomba D.O., mariscos frescos, sazón valenciana. Una institución de casi 90 años.",
+ f:{"Dónde":"C. de la Reina 29, Chueca","Precio":"~40 €","Especialidad":"Paella valenciana, fideuá, arroz negro"},
+ tip:"Paella de mariscos o la valenciana clásica. El pan con tomate de entrada es de cortesía pero muy bueno.",map:"La Barraca Madrid"},
+{cat:"Para comer",name:"Los 33 Restaurante",tag:"Bistró · RESERVADO 13 AGO",booked:"Reservado · 13 ago 15:00 · 3 pax",
+ story:"Restaurante de cocina de mercado en el barrio de Justicia. Ambiente moderno, carta cuidada.",
+ f:{"Dónde":"Plaza de las Salesas 9","Precio":"€€"},
+ tip:"Después de comer, un paseo por el barrio de Justicia/Chueca.",map:"Los 33 Restaurante Madrid"},
+{cat:"Para comer",name:"El Pabellón de Florida Park",tag:"Terraza exterior · RESERVADO 12 AGO",booked:"Reservado · 12 ago 13:15 · 2 pax",
+ story:"Restaurante con terraza exterior en el parque Florida Park, dentro de la Casa de Campo.",
+ f:{"Dónde":"Casa de Campo, Florida Park","Metro":"Lago (L10)","Personas":"2 · terraza exterior"},
+ tip:"Metro línea 10, parada Lago. Un plan diferente a los restaurantes del centro.",map:"Florida Park Madrid"},
+{cat:"Para comer",name:"Roostiq",tag:"A fuego · RESERVADO 14 AGO",booked:"Reservado · 14 ago 19:15 · 3 pax",
+ story:"Parrilla de carbón y horno de leña napolitano. Pollo ecológico de su propia finca. La tarta de queso es de las mejores de Madrid.",
+ f:{"Dónde":"C. Augusto Figueroa 47, Chueca","Precio":"€€€","Especialidad":"Carnes a la brasa, pizza fermentada 72h, tarta de queso"},
+ tip:"Pidan la tarta de queso. El Roostiq Bar (Barquillo 40) es el local hermano para copas.",map:"Roostiq Madrid"},
+{cat:"Para comer",name:"La Máquina Jorge Juan",tag:"Mariscos premium · RESERVADO 15 AGO",booked:"Reservado · 15 ago 20:00 · 3 pax",
+ story:"Mariscos de primer nivel en Salamanca. Gambas, percebes, navajas, bogavante. El Grupo Tejedor sabe lo que hace.",
+ f:{"Dónde":"C. Jorge Juan 12, Salamanca · metro Serrano","Precio":"~60-80 € por persona · €€€€"},
+ tip:"Pidan mesa en la terraza. El ceviche y las gambas de Huelva son los imprescindibles.",map:"La Máquina Jorge Juan Madrid"},
+{cat:"Para comer",name:"The Library Wine Boutique",tag:"Vino y cocina · RESERVADO 16 AGO",booked:"Reservado · 16 ago 19:00 · 3 pax",
+ story:"Bodega-restaurante con selección de vinos impresionante. Tarde de domingo perfecta.",
+ f:{"Tipo":"Wine bar + restaurante","Precio":"€€–€€€"},
+ tip:"Dejen que el sommelier los guíe. Si les gustan los vinos, este va a ser memorable.",map:"The Library Wine Boutique Madrid"},
+{cat:"Para comer",name:"Taberna Jam · Cocina libanesa",tag:"Libanés · RESERVADO 27 AGO",booked:"Reservado · 27 ago 20:00 · 3 pax",
+ story:"Taberna de cocina libanesa en Madrid. La cocina del Levante mediterráneo en formato taberna española.",
+ f:{"Tipo":"Cocina libanesa","Precio":"€€","Personas":"3 · sala"},
+ tip:"Pidan varios platos para compartir — hummus, koftas, fattoush. Ideal para compartir.",map:"Taberna Jam Madrid"},
+{cat:"Para comer",name:"HER Restaurant",tag:"Mediterráneo con horno de leña",
+ story:"Cocina mediterránea moderna del Grupo Sartoria con horno de leña y josper. Berenjena crujiente, pappardelle al ragú y carrot cake son sus señas de identidad. (Ya tienen reserva el 7 ago.)",
+ f:{"Dónde":"C. de Hermosilla 4, Salamanca","Precio":"~40-45 €","Reserva":"Muy recomendada · Grupo Sartoria"},
+ tip:"Reservar con varios días de antelación — suele llenarse.",map:"HER Restaurante Hermosilla Madrid"},
+{cat:"Para comer",name:"Persimmons · Georgiano",tag:"El único georgiano bueno de Madrid",
+ story:"El único restaurante georgiano recomendable en Madrid. La carta de chacha (aguardiente georgiano) y la coctelería son excelentes. El khachapuri (pan de queso con huevo) es su plato estrella.",
+ f:{"Dónde":"C. de Bárbara de Braganza 2, Las Salesas","Precio":"€€-€€€","Especialidad":"Khachapuri, coctelería de chacha","Horario":"Martes a domingo"},
+ tip:"Metro Colón o Alonso Martínez. La planta baja es más íntima para grupos.",map:"Persimmons Restaurante Georgiano Madrid"},
+{cat:"Para comer",name:"Charrúa · Parrilla argentina",tag:"Las mejores carnes de Buenos Aires",
+ story:"Parrilla argentino-uruguaya en Conde de Xiquena. Bife de chorizo y mollejas a la brasa con carnes de varios países. Ambiente ruidoso y animado, muy de noche larga.",
+ f:{"Dónde":"Conde de Xiquena 4, Justicia","Precio":"~90-100 €","Especialidad":"Bife de chorizo, mollejas a la brasa","Reserva":"Recomendada"},
+ tip:"Para los amantes de la carne. El ambiente recuerda a los grandes parrilleros de Buenos Aires.",map:"Charrua Restaurante Madrid"},
+{cat:"Para comer",name:"Cannibal Raw Bar",tag:"Raw bar y producto gallego",
+ story:"Raw bar de fusión con producto gallego: tartar de atún, ceviche, ostras. Ambiente joven. Históricamente cierra algunos fines de semana de agosto — verificar antes.",
+ f:{"Dónde":"C. del Almirante 12, Chueca","Precio":"€€€","Aviso":"Puede cerrar en agosto · verificar"},
+ tip:"Confirmar por redes sociales antes de ir en agosto.",map:"Cannibal Raw Bar Madrid"},
+{cat:"Para comer",name:"Leña Madrid · Dani García",tag:"Steakhouse a la brasa · Dani García",
+ story:"El steakhouse de Dani García (chef de 3 estrellas Michelin) en el Hotel Hyatt Hesperia (Castellana 57). Cortes premium a la brasa, burrata ahumada. A 6 min andando del depa.",
+ f:{"Dónde":"P. de la Castellana 57, Chamberí · metro Iglesia","Precio":"€€€€","Reserva":"Imprescindible · suele estar lleno","Especialidad":"Cortes a la brasa, brunch fines de semana"},
+ tip:"Muy cerca de Larra 3. El brunch del fin de semana también está muy bien. Reservar con antelación.",map:"Leña Madrid Dani García"},
+{cat:"Para comer",name:"Fratelli Figurato",tag:"Pizza napolitana de referencia",
+ story:"Pizzería napolitana (C. Santa Engracia 50, Chamberí) muy popular en el barrio. Masa de fermentación larga, ingredientes italianos. De las mejores pizzas de Madrid.",
+ f:{"Dónde":"C. Santa Engracia 50, Chamberí","Precio":"€€","Especialidad":"Pizza napolitana","Reserva":"Recomendada"},
+ tip:"En pleno Chamberí — perfecto para una cena de barrio sin complicaciones.",map:"Fratelli Figurato Madrid"},
+{cat:"Para comer",name:"Lakasa",tag:"Cocina española contemporánea · reconocida",
+ story:"Lakasa (C. Santa Engracia 4) es una de las cocinas contemporáneas más valoradas de Chamberí. Producto de mercado, técnica precisa, ambiente informal elegante.",
+ f:{"Dónde":"C. Santa Engracia 4, Chamberí","Precio":"€€€","Reserva":"Muy recomendada"},
+ tip:"Una de las mejores relaciones calidad-precio del barrio para comer bien sin el precio de los grandes.",map:"Lakasa Madrid"},
+{cat:"Para comer",name:"Em Sherif",tag:"Libanés gourmet",
+ story:"El libanés más sofisticado de Madrid (C. Gravina 19, Chueca). Cocina del Levante de autor: mezze, kibbeh, kafta, taboulé, carnes a la brasa.",
+ f:{"Dónde":"C. Gravina 19, Chueca","Precio":"€€€","Reserva":"Recomendada","Especialidad":"Mezze completo, carnes a la brasa"},
+ tip:"Para una noche especial. Dejen que el menú de mezze llegue solo — está diseñado para compartir.",map:"Em Sherif Madrid"},
+{cat:"Para comer",name:"Circolo Popolare",tag:"Italiano espectacular · Big Mamma",
+ story:"El italiano más llamativo de Madrid: Torre Picasso, decoración con árbol de naranjas en el techo y ambiente muy festivo. Del grupo Big Mamma. Pizza al metro y milanesa de 550g.",
+ f:{"Dónde":"Torre Picasso, Plaza Pablo Ruiz Picasso 1, AZCA","Precio":"€€€","Reserva":"Solo online · abre 30 días antes a las 9:00","Especialidad":"Pizza al metro, milanesa, tiramisú de pistacho"},
+ tip:"La reserva se agota en horas — entrar a la web exactamente a las 9:00 del día que abre el mes.",map:"Circolo Popolare Madrid"},
+{cat:"Para comer",name:"Sacha · El Qüenco de Pepa",tag:"Clásicos de Madrid con historia",
+ story:"Sacha (desde 1972): bistró de producto en un callejón ajardinado cerca del Bernabéu. La Falsa Lasaña de txangurro y la tortilla vaga son de culto. El Qüenco de Pepa: andaluza de mercado de la chef Pepa Muñoz.",
+ f:{"Sacha":"C. Juan Hurtado de Mendoza 11 · €€€ · terraza mágica · cierra ~15 días agosto","Qüenco de Pepa":"C. Henri Dunant 21, Cuzco · €€€ · puede cerrar agosto","Reserva":"Recomendada en ambos"},
+ tip:"Verificar apertura antes de ir en agosto — ambos suelen cerrar unos días. Sacha: pedir el steak tartar también.",map:"Restaurante Sacha Madrid"},
+{cat:"Para comer",name:"El Paraguas · Filandón",tag:"Asturiana y pescados de primer nivel",
+ story:"El Paraguas (C. Jorge Juan 16): alta cocina asturiana del Grupo Paraguas. Fabes con centolla, verdinas con faisán. Ambiente elegante y formal. Filandón: pescados a la brasa en carretera El Pardo — solo en coche.",
+ f:{"El Paraguas":"C. Jorge Juan 16, Salamanca · €€€€ · reserva imprescindible · cierra domingo noche","Filandón":"Carretera M-612, km 1,9 · €€€ · solo en taxi/coche","Especialidad":"Fabes con centolla · rodaballo salvaje"},
+ tip:"El Paraguas: ambiente elegante, reservar con antelación. Filandón: hay que ir en taxi pero merece el viaje.",map:"El Paraguas Restaurante Madrid"},
+{cat:"Para comer",name:"TRAMO · Xanverí · Numa Pompilio",tag:"Creativos y contemporáneos",
+ story:"TRAMO (Prosperidad): estrella verde Michelin, cocina sostenible. Xanverí (C. Zambrana 6): chef César Anca en formato informal creativo. Numa Pompilio (C. Alcalá 20): italiana refinada del Grupo Paraguas.",
+ f:{"TRAMO":"C. Eugenio Salazar 56 · estrella verde · €€","Xanverí":"C. Zambrana 6 · creativa informal · €€€","Numa Pompilio":"C. Alcalá 20 · italiana · €€€€"},
+ tip:"TRAMO es la opción más accesible económicamente y sorprende mucho. Reservar en los tres.",map:"TRAMO restaurante Madrid"},
+{cat:"Para comer",name:"Taberna Los Gallos · Picos Pardos",tag:"Azoteas con cocina",
+ story:"Los Gallos (Jorge Juan, Salamanca): 5 ambientes con azotea, tapas españolas de mercado. Picos Pardos Sky Lounge (BLESS Hotel, Velázquez 62): rooftop con piscina en el barrio de Salamanca.",
+ f:{"Los Gallos":"Callejón Puigcerdá 4-6, Salamanca · €€€ · pedir azotea al reservar","Picos Pardos":"BLESS Hotel, C. Velázquez 62 · €€€€ · reserva camas balinesas"},
+ tip:"Los Gallos: pedir el ático al reservar. Picos Pardos: espectacular pero muy caro — un cóctel merece la pena para ver la piscina.",map:"Taberna Los Gallos Salamanca Madrid"},
+
+/* ===================== NIKKEI & ASIÁTICO ===================== */
+{cat:"Nikkei & asiático",name:"Osaka Nikkei",tag:"Japonés-peruano · primer local europeo",
+ story:"El primer local europeo del grupo limeño Osaka. Nikkei japonés-peruano en el Paseo de la Castellana. Abre hasta la 1-2am. El Toro Tartar (atún rojo, ajo negro, caviar) es el plato estrella.",
+ f:{"Dónde":"P. de la Castellana 36-38","Precio":"€€€€ · ~70-90 €","Reserva":"Recomendada"},
+ tip:"Para una noche especial de nikkei. Pidan el ceviche wasabi y el toro tartar.",map:"Osaka Nikkei Madrid"},
+{cat:"Nikkei & asiático",name:"MATEO HONTEN",tag:"Izakaya japonesa con vinilos",
+ story:"Izakaya japonés en C. San Mateo 14 (Tribunal). Hamachi tiradito, maguro katsu sando y omakase (~65€). Música de vinilos y ambiente muy bueno.",
+ f:{"Dónde":"C. de San Mateo 14, Justicia","Precio":"€€€","Reserva":"Recomendada · reservar barra","Especialidad":"Hamachi tiradito, omakase"},
+ tip:"Reservar la barra para ver la cocina. De los mejores japoneses de Madrid.",map:"Mateo Honten Madrid"},
+{cat:"Nikkei & asiático",name:"Ponja Nikkei",tag:"Peruano-japonés del Grupo Quispe",
+ story:"Nikkei peruano-japonés del Grupo Quispe. En C. Santa Teresa 16 (Alonso Martínez). Hamachi tiradito, makis acevichados, katsu sando de ibérico. Local pequeño e íntimo.",
+ f:{"Dónde":"C. de Santa Teresa 16, Alonso Martínez","Precio":"€€€","Reserva":"Recomendada","Especialidad":"Tiradito, makis acevichados"},
+ tip:"Local pequeño — reservar con antelación. Mucho mejor que la cadena Quispe en precio-experiencia.",map:"Ponja Nikkei Madrid"},
+{cat:"Nikkei & asiático",name:"Santoku La Mesa",tag:"Omakase a precio accesible",
+ story:"Omakase japonés del chef Gabriel Suárez en C. Lope de Rueda 6 (Retiro). 6 pases por ~35€ — la mejor relación calidad-precio de Madrid para omakase. Hay lista de espera.",
+ f:{"Dónde":"C. de Lope de Rueda 6, Retiro","Precio":"€€ · omakase 6 pases ~35€","Reserva":"ESENCIAL · lista de espera","Especialidad":"Anguila kabayaki, gyoza de cocido madrileño"},
+ tip:"Turno fijo de 1 hora. Reservar en cuanto puedan — es el secreto mejor guardado de Madrid.",map:"Santoku La Mesa Madrid"},
+{cat:"Nikkei & asiático",name:"Izariya",tag:"Kaiseki japonés auténtico · Chamberí",
+ story:"Kaiseki japonés en C. Zurbano 63 (Almagro/Chamberí). El chef Masahito Okazoe prepara menús kaiseki tradicionales en un local de solo 23 plazas. Muy cerca de Larra 3.",
+ f:{"Dónde":"C. de Zurbano 63, Chamberí","Precio":"€€€€ · ~60-120 €","Reserva":"OBLIGATORIA","Horario":"Cierra lunes"},
+ tip:"No es un japonés típico — es kaiseki auténtico. Para una experiencia única muy cerca del depa.",map:"Izariya Madrid"},
+{cat:"Nikkei & asiático",name:"Hotaru · Le Club Sushita · Kuoco",tag:"Más japoneses y fusión",
+ story:"Hotaru (C. Alcalá 99, junto al Retiro): sushi con toques mexicanos, Guía Michelin. Le Club Sushita (C. Alcalá 63): sushi fusión años 70. Kuoco (C. Barquillo 30): fusión mundial con menú Attraverso 108€.",
+ f:{"Hotaru":"Alcalá 99 · Michelin · €€€","Le Club Sushita":"Alcalá 63 · sushi fusión · €€€","Kuoco":"Barquillo 30 · fusión mundial · 1 Sol Repsol · €€€€"},
+ tip:"Hotaru abre hasta la 1am todos los días — bueno si llegan a Madrid con hambre tarde.",map:"Hotaru Restaurante Japones Madrid"},
+{cat:"Nikkei & asiático",name:"Krachai Thai Cuisine",tag:"El mejor tailandés de Madrid",
+ story:"Tailandés auténtico con Thai Select en C. Fernando VI 11 (Salesas/Alonso Martínez). Menú mediodía desde ~13 €, satay kai y curry Massaman como estrellas.",
+ f:{"Dónde":"C. de Fernando VI 11, Alonso Martínez","Precio":"€€ · menú mediodía ~13 €","Reserva":"Recomendada","Especialidad":"Satay kai, curry Massaman"},
+ tip:"El menú del mediodía entre semana es una ganga. Metro Alonso Martínez a 230m.",map:"Krachai Thai Cuisine Madrid"},
+{cat:"Nikkei & asiático",name:"Nigo Sushi · Ichikani · Monster Sushi",tag:"Japoneses del barrio · más cercanos",
+ story:"Tres japoneses del barrio para noches de sushi sin salir de Chamberí o Malasaña. Nigo Sushi, Ichikani Sushi y Monster Sushi son las opciones más cercanas al depa.",
+ f:{"Nigo Sushi":"Chamberí · sushi de barrio · €€","Monster Sushi":"Buena relación calidad-precio · €€","Ichikani Sushi":"Más elaborado · €€","Consejo":"Confirmar horarios antes de ir"},
+ tip:"Para la noche que apetezca sushi sin complicaciones. Llamen antes para saber si hay mesa.",map:"Nigo sushi Madrid"},
+
+/* ===================== PERUANO & LATINO ===================== */
+{cat:"Peruano & latinoamericano",name:"Llama Inn · Quispe",tag:"Los mejores peruanos de Madrid 🇵🇪",
+ story:"Madrid tiene algunos de los mejores peruanos fuera de Lima. Llama Inn y Quispe son dos recomendaciones de Camila para cocina peruana auténtica. El ceviche es más cítrico y fresco que el mexicano.",
+ f:{"Llama Inn":"Peruano · fusión · €€€","Quispe":"Peruano · más tradicional · €€","Especialidad":"Ceviche, tiradito, lomo saltado"},
+ tip:"La cocina peruana es de las mejores del mundo. El ceviche de Llama Inn o Quispe es una revelación.",map:"Llama Inn peruano Madrid"},
+{cat:"Peruano & latinoamericano",name:"Amazónico",tag:"Tropical y brasileño · experiencia total",
+ story:"Tropical/brasileño/asiático del Grupo Paraguas (C. Jorge Juan 20). Ambiente exuberante, carnes a la brasa y el Jungle Jazz Club hasta las 4am en el sótano. Ticket medio 120-150€.",
+ f:{"Dónde":"C. de Jorge Juan 20, Salamanca","Precio":"€€€€ · ~120-150 €","Reserva":"IMPRESCINDIBLE · difícil fines de semana","Jazz Club":"Sótano · hasta las 4am"},
+ tip:"Para ver y ser visto. El jazz club abajo es una experiencia aparte — pueden ir solo a tomar algo.",map:"Amazónico Restaurante Madrid"},
+{cat:"Peruano & latinoamericano",name:"Charrúa",tag:"Parrilla argentino-uruguaya",
+ story:"Parrilla argentino-uruguaya en Conde de Xiquena. Bife de chorizo y mollejas a la brasa con carnes de varios orígenes. Ambiente ruidoso y muy animado.",
+ f:{"Dónde":"Conde de Xiquena 4, Justicia","Precio":"€€€ · ~90-100 €","Especialidad":"Bife de chorizo, mollejas"},
+ tip:"Para los amantes de la carne bien hecha. El ambiente recuerda a los grandes parrilleros de Buenos Aires.",map:"Charrua Restaurante Madrid"},
+
+/* ===================== ALTA GASTRONOMÍA ===================== */
+{cat:"Alta gastronomía",name:"DiverXO ⭐⭐⭐",tag:"3 estrellas Michelin · David Muñoz · 450€",
+ story:"El 4º mejor restaurante del mundo (50 Best 2025). David Muñoz y sus 'cerdos voladores'. Menú único: 450€ pagados POR ADELANTADO al reservar. Maridaje desde 300€ adicionales.",
+ f:{"Dónde":"Hotel Eurobuilding, C. Padre Damián 23, Chamartín","Precio":"€€€€€ · 450 € menú · maridaje +300 €","Reserva":"90 DÍAS de antelación · se abre on demand","Duración":"~4 horas"},
+ tip:"Si quieren ir, empiecen a buscar reserva en cuanto lleguen a casa. Se abre 90 días antes. La experiencia es de otro mundo.",map:"DiverXO Madrid"},
+{cat:"Alta gastronomía",name:"Kuoco",tag:"Michelin · fusión mundial · 1 Sol Repsol",
+ story:"Restaurante Michelin de fusión mundial (C. Barquillo 30). El menú Attraverso cuesta 108€ y recorre cocinas del mundo con técnica española. 1 Sol Repsol.",
+ f:{"Dónde":"C. Barquillo 30, Centro","Precio":"€€€€ · menú 108 €","Reserva":"Recomendada · cierra lunes y domingos","Especialidad":"Croqueta Gunkan de chipotle, pato pekín"},
+ tip:"Noches de viernes y sábados solo hay menú degustación. Para los curiosos de la alta cocina.",map:"Kuoco Restaurante Madrid"},
+
+/* ===================== ROOFTOPS & COPAS ===================== */
+{cat:"Rooftops & copas",name:"Casa Suecia · Ginkgo Sky Bar",tag:"Los dos mejores rooftops de Madrid",
+ story:"Casa Suecia (Hotel de la Ópera, Plaza de la Independencia 3): terraza con vistas sobre Gran Vía y el Madrid histórico — uno de los mejores sunsets. Ginkgo (Hotel VP Plaza España): panorámica desde la Plaza de España.",
+ f:{"Casa Suecia":"Plaza Independencia 3 · vistas Gran Vía · €€€ · reservar","Ginkgo Sky Bar":"Hotel VP Plaza España · panorámica 360° · €€€","Mejor hora":"45-60 min antes del atardecer"},
+ tip:"Casa Suecia conviene reservar con antelación fines de semana. La vista al atardecer es espectacular.",map:"Casa Suecia Madrid Rooftop"},
+{cat:"Rooftops & copas",name:"Picos Pardos Sky Lounge",tag:"Rooftop con piscina · Salamanca",
+ story:"BLESS Hotel (C. Velázquez 62, Salamanca). Rooftop con piscina esmeralda, cócteles y cocina. El más glamuroso de Madrid. Dress code smart-casual.",
+ f:{"Dónde":"BLESS Hotel, C. Velázquez 62, Salamanca","Precio":"€€€€","Piscina":"~10:00-20:00 · con suplemento para no huéspedes"},
+ tip:"Es caro pero impresionante. Un cóctel en la barra del rooftop merece el precio.",map:"Picos Pardos Sky Lounge BLESS Hotel Madrid"},
+{cat:"Rooftops & copas",name:"Frecuencia · Willy HiFi",tag:"Bares con personalidad",
+ story:"Frecuencia: bar con terraza en altura, muy bien para el atardecer con música cuidada. Willy HiFi: el bar donde el vinilo es protagonista — buena selección de discos, sin pretensiones.",
+ f:{"Frecuencia":"Bar rooftop · €€ · atardecer","Willy HiFi":"Bar de vinilos · €€ · Chamberí/Malasaña","Mejor hora":"A partir de las 20:00"},
+ tip:"Willy HiFi: si les gusta la música de verdad, es el sitio. Pídanse algo y escuchen.",map:"Frecuencia bar Madrid"},
+{cat:"Rooftops & copas",name:"Gota · Vinology · The Dash",tag:"Wine bars y coctelería fina",
+ story:"Gota (Ponzano): wine bar pequeño con vinos naturales. Vinology: catas guiadas de vinos españoles. The Dash: moderno, cócteles y vino.",
+ f:{"Gota":"Ponzano · íntimo · naturales · €€","Vinology":"Catas guiadas · €€ · aprenden sobre vinos españoles","The Dash":"Moderno · cócteles y vino · €€"},
+ tip:"En Vinology pueden hacer una cata guiada — muy buena experiencia para aprender sobre vinos españoles.",map:"Vinology wine bar Madrid"},
+{cat:"Rooftops & copas",name:"Snake Bar · Barbara Ann · Barco",tag:"Bares de noche",
+ story:"Snake Bar: cócteles con ambiente animado joven. Barbara Ann: rock sin poses, el tipo de bar que se recuerda. Barco: bar de barrio, casual y sin complicaciones.",
+ f:{"Snake Bar":"Cócteles animado · €€","Barbara Ann":"Rock sin poses · €€","Barco":"Bar de barrio · € · muy local"},
+ tip:"Barbara Ann es ideal para una noche sin pretensiones. El ambiente es más auténtico que cualquier bar de moda.",map:"Snake Bar Madrid"},
+{cat:"Rooftops & copas",name:"Bodega La Ardosa · Radio Rooftop",tag:"Vermut de barril y terraza de hotel",
+ story:"La Ardosa (C. Colón 13): vermut de barril centenario, el mejor plan del mediodía. Radio Rooftop (Plaza de Santa Ana): terraza de hotel con vistas sobre el centro.",
+ f:{"La Ardosa":"C. Colón 13 · centenaria · vermut de barril · €","Radio Rooftop":"Plaza Santa Ana · terraza con vistas · €€€"},
+ tip:"La Ardosa es el plan más auténtico y barato. Radio Rooftop para cuando quieran algo más de experiencia.",map:"Bodega La Ardosa Colón Madrid"},
+
+/* ===================== ACTIVIDADES ===================== */
+{cat:"Actividades",name:"Parque del Retiro",tag:"El parque · 2-3 horas",
+ story:"Era el jardín privado de los reyes hasta 1868. El Palacio de Cristal hace exposiciones de arte gratis. Patrimonio de la Humanidad desde 2021. Las barcas del Estanque Grande son un clásico.",
+ f:{"Horario":"6:00–24:00 en verano","Precio":"Gratis · barcas 6-8 €","Metro":"Retiro, Íbiza o Atocha","Palacio de Cristal":"Gratis"},
+ tip:"Ir temprano en agosto — mañana o final de tarde. El Palacio de Cristal a primera hora sin gente es increíble.",map:"Parque del Retiro Madrid"},
+{cat:"Actividades",name:"Palacio Real",tag:"El palacio más grande de Europa · 12 €",
+ story:"El palacio de residencia oficial de la monarquía española. Es el palacio real más grande de Europa Occidental. 3.418 habitaciones (aunque solo visitan unas 50). Impresionante Salón del Trono.",
+ f:{"Dónde":"Plaza de Oriente / C. Bailén · Metro Ópera","Precio":"~12 € · reducida ~6 €","Horario":"L-S 10:00-20:00 · D y festivos 10:00-16:00","Gratis":"Hispanoamericanos: L-J últimas horas en taquilla"},
+ tip:"Compren online para evitar colas. Cambio de guardia miércoles y sábados. Puede cerrar por actos oficiales — verificar.",map:"Palacio Real Madrid"},
+{cat:"Actividades",name:"Templo de Debod",tag:"El mejor atardecer de Madrid",
+ story:"Templo egipcio real de 2.000 años. Egipto se lo regaló a España en 1968 por salvar los templos de Nubia. Lo desmontaron piedra por piedra. La puesta de sol detrás es la más bonita de Madrid.",
+ f:{"Precio":"Gratis","Metro":"Plaza de España o Ventura Rodríguez","Mejor hora":"45 min antes del atardecer"},
+ tip:"Lleguen 45 minutos antes para encontrar sitio. El más instagrameable y gratis de Madrid.",map:"Templo de Debod Madrid"},
+{cat:"Actividades",name:"Museos con horario gratuito",tag:"Arte gratis en horario especial",
+ story:"Los tres grandes museos de Madrid tienen horario gratuito. Aprovechen para ver el Guernica, los Velázquez y el Thyssen sin pagar — pero lleguen 30 min antes, hay fila.",
+ f:{"Prado":"Gratis 18:00–20:00 (L-S) y 17:00–19:00 (dom)","Reina Sofía":"Gratis 19:00–21:00 (L-S) y 13:30–19:00 (dom) · el Guernica","Thyssen":"Gratis lunes de 12:00 a 16:00","CaixaForum":"6 € · Paseo del Prado 36 · diario 10-20h"},
+ tip:"El Prado gratis de noche es una experiencia única. El Guernica de Picasso en el Reina Sofía es imprescindible.",map:"Museo del Prado Madrid"},
+{cat:"Actividades",name:"Casa de Campo",tag:"El pulmón verde de Madrid",
+ story:"5 veces más grande que el Central Park. Era coto de caza real desde Felipe II. Tiene lago, Zoo Aquarium, Parque de Atracciones y el teleférico (⚠️ cerrado desde 2022, posible reapertura finales 2026).",
+ f:{"Zoo":"~26-34 €","Parque Atracciones":"~32 €","Lago":"Barcas 6-8 €","Teleférico":"⚠️ Cerrado desde 2022 · verificar antes de ir","Metro":"Lago (L10) o Casa de Campo (L5)"},
+ tip:"El lago de Casa de Campo es lo más accesible y barato. Verificar siempre si el teleférico ya reabrió — lleva cerrado desde 2022.",map:"Casa de Campo Madrid"},
+{cat:"Actividades",name:"El Rastro",tag:"El mercadillo más famoso · domingos",
+ story:"El mercadillo más famoso de Madrid — domingos y festivos desde las 9:00 hasta las 15:00 en La Latina. Antigüedades, vintage, ropa, libros, vinilos, artesanía.",
+ f:{"Dónde":"La Latina · Ribera de Curtidores · Metro La Latina","Horario":"Domingos y festivos 9:00-15:00","Mejor hora":"11:00-13:00","Aviso":"Cuidado con carteristas"},
+ tip:"Terminar El Rastro con aperitivo en los bares de La Cava Baja y La Cava Alta. El Tigre de tapas también está por ahí.",map:"El Rastro Madrid"},
+{cat:"Actividades",name:"Matadero Madrid · Jardín Botánico",tag:"Cultura gratuita junto al río",
+ story:"Matadero (Plaza Legazpi 8): centro de arte contemporáneo en matadero neomudéjar — exposiciones, teatro, Cineteca. Gran parte gratis. Jardín Botánico (Plaza Murillo 2, junto al Prado): 4 € entrada, hasta las 21:00 en agosto.",
+ f:{"Matadero":"Metro Legazpi · gran parte gratis · junto al Manzanares","Jardín Botánico":"4 € · gratis martes 10-13h · hasta 21h en agosto"},
+ tip:"Matadero es un plan diferente y casi gratis. El Jardín Botánico es el refugio de sombra más bonito del centro.",map:"Matadero Madrid"},
+{cat:"Actividades",name:"Palacio Real · Plaza de Oriente · Sol",tag:"El Madrid histórico a pie",
+ story:"Un paseo clásico: Palacio Real → Plaza de Oriente → Ópera → Calle Mayor → Plaza de la Villa → Plaza Mayor → Puerta del Sol. Se puede hacer en 2-3 horas caminando.",
+ f:{"Distancia":"2-3 km de paseo","Precio":"Gratis (exterior) · Palacio 12 €","Metro":"Ópera (L2/L5) para el inicio","Duración":"2-3 horas tranquilas"},
+ tip:"Hagan el paseo de tarde (17:00-20:00) cuando baja el calor de agosto. El Palacio al atardecer está menos concurrido.",map:"Palacio Real Madrid"},
+{cat:"Actividades",name:"Toledo y Segovia · Escapadas en AVE",tag:"Día completo a 30 min de Madrid",
+ story:"Las dos escapadas clásicas desde Madrid, cada una a media hora en AVE. Toledo: tres culturas en una ciudad. Segovia: acueducto romano de 2.000 años y el Alcázar que inspiró a Disney.",
+ f:{"Toledo":"AVE 33 min · ~14-22 € ida · desde Atocha","Segovia":"AVE 30 min · ~13-25 € · desde Chamartín","Tiempo":"Día completo · salir 8-9am"},
+ tip:"En Toledo hay escaleras mecánicas públicas que suben desde el río. En Segovia el cochinillo asado es el plato local.",map:"Toledo España"},
+{cat:"Actividades",name:"BiciMAD · Escape rooms",tag:"Bici eléctrica y planes de interior",
+ story:"BiciMAD es la bici pública eléctrica de Madrid. 653 estaciones en 2026. Registro por app con pasaporte. Primeros 30 min: 0,50 €. Para calor extremo de agosto: escape rooms en Chamberí desde ~21 €.",
+ f:{"BiciMAD":"App BiciMAD · 0,50 € primeros 30 min · 653 estaciones","Escape rooms":"Chamberí · desde ~21 € · The Rombo Code, Hermético","Piscinas municipales":"~4,50-5 € · comprar en app Madrid Móvil"},
+ tip:"BiciMAD es perfecta para el paseo del Retiro o por el Manzanares. Los escape rooms son ideales para la tarde de calor más intenso.",map:"BiciMAD Madrid"}
+
+];
+</script>
+
+<script>
+const ROMA=[
+{cat:"Imperdibles",name:"Coliseo + Foro Romano",tag:"El corazón del Imperio · 2-3 h",
+ story:"Cabían 50.000 personas viendo gladiadores. Un sistema de toldos manejados por marineros daba sombra — el estadio con techo retráctil del año 80.",
+ f:{"Horario":"9:00–19:15 en verano","Precio":"18 € + 2 € reserva (incluye Foro y Palatino)","Reserva":"OBLIGATORIA — se agota días antes","Metro":"L-B, Colosseo"},
+ tip:"Compren el boleto en línea con días de antelación. El Foro y Palatino entran con el mismo boleto. Casi no hay sombra: gorra y agua.",map:"Colosseo Roma"},
+{cat:"Imperdibles",name:"Fontana di Trevi",tag:"La fuente más famosa · 20 min",
+ story:"Las monedas que lanzan se donan a Cáritas — más de 1,4 millones de euros al año para comedores sociales. Si lanzan una de espaldas, el trato es que vuelven.",
+ f:{"Horario":"Siempre abierta","Precio":"Gratis","Distancia":"10 min a pie del hotel","Mejor hora":"7:00 am o 23:00"},
+ tip:"De noche la iluminación es preciosa y están casi solos. El hotel está a 10 minutos — vayan una noche después de cenar.",map:"Fontana di Trevi Roma"},
+{cat:"Imperdibles",name:"Panteón de Roma",tag:"2.000 años intacto · 30 min",booked:"Ya lo tienen: 18 ago 17:00",
+ story:"Su cúpula sigue siendo la mayor del mundo hecha de concreto sin varilla. El óculo del techo está abierto: cuando llueve entra agua y el piso tiene desagües de la época romana.",
+ f:{"Horario":"9:00–19:00","Precio":"5 €","Distancia":"3 min del hotel","Reserva":"Ya tienen el 18 ago 17:00 · código GYGKBF9BZQW8"},
+ tip:"Párence justo bajo el óculo y miren arriba.",map:"Pantheon Roma"},
+{cat:"Imperdibles",name:"Plaza Navona",tag:"Piazza barroca · siempre",
+ story:"Construida encima de un estadio romano — de ahí su forma alargada. La fuente de los Cuatro Ríos es de Bernini. La estatua del Nilo se tapa la cara: la leyenda dice que es por la iglesia rival de Borromini.",
+ f:{"Horario":"Siempre abierta","Precio":"Gratis","Distancia":"5 min del hotel","Mejor hora":"Tarde y noche"},
+ tip:"Los cafés de la plaza cobran el triple. Una calle hacia adentro pagan la mitad.",map:"Piazza Navona Roma"},
+{cat:"Imperdibles",name:"Castillo de Sant'Angelo",tag:"Fortaleza papal · 2 h",booked:"Ya lo tienen: 18 ago 12:45",
+ story:"Empezó como tumba del emperador Adriano. Hay un pasadizo secreto elevado que conecta con el Vaticano para que los papas pudieran huir. Escenario final de la ópera Tosca.",
+ f:{"Horario":"9:00–19:30","Distancia":"12 min del hotel","Reserva":"Ya tienen · código GYG32L44QA87"},
+ tip:"La terraza de arriba tiene vista de 360° de Roma con la cúpula de San Pedro. De las mejores fotos del viaje.",map:"Castel Sant Angelo Roma"},
+{cat:"Vaticano",name:"Audiencia Papal",tag:"Miércoles 19 agosto · sin boleto",booked:"Sin boleto · lleguen 7:30am",
+ story:"El Papa León XIV (Robert Prevost) da audiencia general cada miércoles. En agosto los visitantes individuales entran libres, sin reserva. Solo presentarse.",
+ f:{"Cuándo":"Miércoles 10:00 am","Llegar":"7:30–8:00 am","Dónde":"Plaza de San Pedro","Boleto":"En agosto NO se necesita para individuos","Vestimenta":"Hombros y rodillas cubiertos"},
+ tip:"Gorra, bloqueador y agua. Poca sombra en agosto. Si hay dudas, revisen vaticannews.va el lunes 17.",map:"Piazza San Pietro Vaticano"},
+{cat:"Vaticano",name:"Museos Vaticanos + Capilla Sixtina",tag:"9 km de arte · 3 h",booked:"Ya lo tienen: 20 ago 9:15",
+ story:"Siglos de coleccionismo papal. La Capilla Sixtina es el destino, pero la Galería de los Mapas puede robarse la tarde.",
+ f:{"Reserva":"Ya tienen 20 ago 9:15 · código GYG83XKGN2Z8","Proveedor":"Enjoy Rome · en español","Regla":"Silenzio y sin fotos en la Capilla Sixtina"},
+ tip:"Miguel Ángel pintó el techo DE PIE, no acostado (mito popular). Se autorretrató en el Juicio Final: es la piel colgante que sostiene San Bartolomé.",map:"Musei Vaticani Roma"},
+{cat:"Vaticano",name:"Necrópolis Vaticana",tag:"Ciudad de los muertos · 1 h",booked:"Ya lo tienen: 20 ago 14:00",
+ story:"Bajo la basílica hay una calle romana del siglo I. Al fondo: la tumba de San Pedro. Solo 250 personas al día pueden bajar.",
+ f:{"Reserva":"Ya tienen 20 ago 14:00 · código UACD-6S9Q","Entrada":"Via Paolo VI · llegar 13:30","Pagado":"60 € (3 personas)"},
+ tip:"Espacios angostos y húmedos. El que sea claustrofóbico que lo tenga en mente.",map:"Via Paolo VI Vaticano"},
+{cat:"Comer en Roma",name:"Armando al Pantheon",tag:"Trattoria romana clásica · €€€",
+ story:"Desde 1961. La familia Gargioli cocina la Roma de siempre: carbonara perfecta, rabo de buey, carciofi. Guía Michelin. A 3 minutos del hotel.",
+ f:{"Dónde":"Salita dei Crescenzi 31 · 3 min del hotel","Precio":"€€€","Reserva":"IMPRESCINDIBLE con semanas de antelación","Horario":"Cierra domingos"},
+ tip:"Uno de los mejores restaurantes de Roma. Reserven por correo con mucho tiempo.",map:"Armando al Pantheon Roma"},
+{cat:"Comer en Roma",name:"Sant'Eustachio Il Caffè · Tazza d'Oro",tag:"Los mejores cafés del mundo · €",
+ story:"Sant'Eustachio (desde 1938): el Gran Caffè viene endulzado por defecto — pidan 'senza zucchero' si no. Tazza d'Oro (1944): famosa por la granita di caffè con panna — perfecta para agosto.",
+ f:{"Sant'Eustachio":"Piazza di Sant'Eustachio 82 · 5 min","Tazza d'Oro":"Via degli Orfani 84 · junto al hotel","Precio":"€ · ~1,50-3 €","Horario":"7:00 en adelante"},
+ tip:"Vengan aquí a desayunar cornetto + cappuccino cada mañana. Tazza d'Oro: la granita di caffè con panna en agosto es perfecta para el calor.",map:"Sant'Eustachio il Caffe Roma"},
+{cat:"Comer en Roma",name:"Gelateria del Teatro",tag:"Gelato artesanal · €",
+ story:"El mejor gelato del barrio. Sabores de frutas de temporada y hierbas — lavanda-limón, frambuesa-salvia. Se ve hacer el gelato detrás del cristal.",
+ f:{"Dónde":"Via dei Coronari 65/66 · 8 min hotel","Precio":"€ · bola ~2,50 €"},
+ tip:"Si el pistacho es verde fosforescente, es industrial. El de aquí es natural y cremoso.",map:"Gelateria del Teatro Roma"},
+{cat:"Comer en Roma",name:"Roscioli · Antico Forno Roscioli",tag:"Los templos de la comida romana · €-€€€",
+ story:"Roscioli Salumeria: deli + restaurante con la mejor carbonara. Guía Michelin. Antico Forno: el horno de pan de la misma familia desde 1824. La pizza bianca aquí es una experiencia.",
+ f:{"Roscioli":"Via dei Giubbonari 21 · reserva imprescindible · cierra domingos","Antico Forno":"Via dei Chiavari 34 · pizza al taglio por peso · cierra domingos","Distancia":"15 min del hotel"},
+ tip:"Sin reserva en Roscioli: entren al mostrador de charcutería (sin reserva). En el Forno: pizza bianca + burrata, cómanla caminando.",map:"Roscioli Salumeria Roma"},
+{cat:"Comer en Roma",name:"Da Enzo al 29 · Da Teo · Suppli",tag:"Trastevere auténtico · €-€€",
+ story:"Da Enzo: la trattoria más querida de Trastevere desde los años 30. Sin reservas, hay que llegar antes de abrir. Da Teo: en una plaza preciosa, acepta reserva. Suppli: el mejor supplì romano desde 1979.",
+ f:{"Da Enzo":"Via dei Vascellari 29 · SIN reservas · llegar 30 min antes","Da Teo":"Piazza dei Ponziani 7A · reserva recomendada · cierra domingos","Suppli":"Via di San Francesco a Ripa 137 · cierra domingos"},
+ tip:"Da Enzo: lleguen a las 12:00 o 18:45. No llegan, no comen. Vale cada minuto de espera.",map:"Da Enzo al 29 Trastevere Roma"},
+{cat:"Comer en Roma",name:"Trapizzino",tag:"Invento romano · €",
+ story:"El trapizzino es un triángulo de pizza blanca caliente relleno de guisos romanos: pollo alla cacciatora, polpette al sugo. Inventado por Stefano Callegari.",
+ f:{"Dónde":"Piazza Trilussa 46, Trastevere","Precio":"€ · ~4-5 € c/u"},
+ tip:"Uno basta para un snack. Dos hacen un almuerzo. Cómanlo de pie junto al mostrador.",map:"Trapizzino Trastevere Roma"},
+{cat:"Lugares y cultura",name:"Escaleras Plaza de España · Altare",tag:"Iconos del centro",
+ story:"Piazza di Spagna: PROHIBIDO sentarse (multa 400 €). Altare della Patria: los romanos le dicen 'la máquina de escribir'. El elevador panorámico tiene la única vista de Roma donde no se ve este edificio.",
+ f:{"Spagna":"Metro L-A · Prohibido sentarse","Altare":"Gratis · elevador ~17 €","Distancia":"15-20 min del hotel"},
+ tip:"Suban al elevador del Altare — es la única vista de Roma donde no se ve este edificio (chiste local, pero la vista es de las mejores).",map:"Piazza di Spagna Roma"},
+{cat:"Lugares y cultura",name:"Villa Borghese · Trastevere",tag:"Parque y barrio bohemio",
+ story:"Villa Borghese: el mejor parque del centro. La terraza del Pincio tiene el mejor atardecer de Roma. Trastevere: el barrio más bonito de noche, bohemio y lleno de vida.",
+ f:{"Villa Borghese":"Gratis · siempre abierto · desde Piazza del Popolo","Trastevere":"15 min a pie o metro Trastevere","Vibe":"Trastevere es el destino nocturno perfecto"},
+ tip:"En agosto, Villa Borghese es el mejor refugio del calor: sombra de verdad. Trastevere de noche con cena y paseo es lo más bonito de Roma.",map:"Villa Borghese Roma"}
+];
+
+const VENECIA=[
+{cat:"Primero lo primero",name:"Cómo funciona Venecia",tag:"Léanlo antes de salir",
+ story:"Sin coches, sin motos, sin bicicletas. Solo barcos y piernas. El GPS falla entre los edificios altos — los venecianos pintaron señales amarillas en las esquinas que funcionan mejor.",
+ f:{"Señales":"Per San Marco · Per Rialto · Per Ferrovia (la estación) · Per Piazzale Roma","Vaporetto":"9,50 € sencillo · 25 € 24h · 35 € 48h","Regla de oro":"Validen SIEMPRE el billete antes de subir"},
+ tip:"Perderse está incluido. Las mejores plazas las van a encontrar sin buscarlas.",map:"Venezia"},
+{cat:"Primero lo primero",name:"Góndolas y traghetto",tag:"La experiencia veneciana",
+ story:"La góndola tiene 11 metros, pesa 600 kg y está construida asimétrica. Todas son negras por ley del siglo XVI para que los nobles no compitieran en lujo.",
+ f:{"Precio oficial":"~90 € por góndola 30 min de día (no por persona)","Noche":"~120 € después de las 19:00","Traghetto":"2 € para cruzar el Gran Canal de pie · 3 min · la góndola de los locales"},
+ tip:"El traghetto es la alternativa: mismo barco, misma sensación, 2 €. Busquen los letreros amarillos 'traghetto' en las orillas del Gran Canal.",map:"Venezia gondola"},
+{cat:"Imperdibles",name:"Plaza de San Marcos + Basílica",tag:"El salón de Europa · 1-2 h",booked:"Basílica ya tienen: 22 ago 13:30",
+ story:"Napoleón llamó a la plaza 'el salón más elegante de Europa'. La Basílica: robaron el cuerpo de San Marcos de Alejandría en 828 escondido bajo carne de cerdo. Resultado: 8.000 m² de mosaicos de oro.",
+ f:{"Reserva Basílica":"Ya la tienen · código GYGX7M965QLG · 22 ago 13:30","Vestimenta":"Obligatoria · hombros y rodillas","Mejor hora":"Temprano o de noche"},
+ tip:"Suban a la Loggia dei Cavalli para ver los caballos de bronce de cerca.",map:"Basilica di San Marco Venezia"},
+{cat:"Imperdibles",name:"Palacio Ducal",tag:"Poder veneciano · 2 h",booked:"Ya lo tienen: 22 ago 13:30",
+ story:"Mil años de poder. 120 dogos gobernaron la república más longeva. Casanova estuvo preso en su ático de plomo y se fugó haciendo un hoyo en el techo.",
+ f:{"Reserva":"Incluida con Basílica · código GYGX7M965QLG","Horario":"8:30–19:00 en verano"},
+ tip:"En la fila de retratos de dogos hay uno tapado con tela negra — lo decapitaron por traición.",map:"Palazzo Ducale Venezia"},
+{cat:"Imperdibles",name:"Puente de Rialto y mercado",tag:"El único puente · 1 h",
+ story:"Hasta 1854 fue el ÚNICO puente sobre el Gran Canal. Ganó un concurso donde participaron Miguel Ángel y Palladio — y ganó un tal Antonio da Ponte (apellido: 'del puente').",
+ f:{"Mercado":"Mañanas hasta ~13:00 · pescadería cierra dom y lun","Mejor hora":"7:00-9:00 am para el mercado","Precio":"Gratis"},
+ tip:"Vayan al mercado a las 8:00 am cuando compran los restauranteros. Después: cicchetti en los bacari de al lado.",map:"Ponte di Rialto Venezia"},
+{cat:"Imperdibles",name:"Gran Canal · Campanile",tag:"Paseos imprescindibles",
+ story:"El Gran Canal: 4 km con 170 palacios. El Campanile: Galileo mostró aquí su telescopio al dogo en 1609. La torre original se derrumbó en 1902 sin matar a nadie, solo al gato del guardián.",
+ f:{"Gran Canal":"Vaporetto L1 de Ferrovia a San Marco · 40 min · €9,50","Campanile":"9:30–21:00 · ~10-12 € · tiene elevador","Mejor hora":"Al atardecer"},
+ tip:"El Gran Canal es el paseo turístico más barato de Venecia. Háganlo el día que llegan: es la mejor introducción.",map:"Canal Grande Venezia"},
+{cat:"Rincones",name:"Librería Acqua Alta · Dorsoduro",tag:"Los rincones más especiales",
+ story:"Librería Acqua Alta: el dueño mete los libros en góndolas para salvarlos de las inundaciones. Con libros arruinados construyó una escalera en el patio para asomarse al canal. Dorsoduro: el barrio universitario.",
+ f:{"Acqua Alta":"Cerca de Campo Santa Maria Formosa · gratis entrar","Dorsoduro":"Academia ~12-15 € · Guggenheim ~16 €","Campo Sta. Margherita":"Spritz por 3 € rodeados de estudiantes"},
+ tip:"La escalera de libros en el patio de Acqua Alta es la foto más original de Venecia. Vayan temprano.",map:"Libreria Acqua Alta Venezia"},
+{cat:"Las islas",name:"Murano y Burano",tag:"Excursión del día libre · 6-8 h",
+ story:"Murano: los vidrieros desterrados en 1291 por sus hornos. Burano: casas de colores para que los pescadores encontraran la suya entre la niebla.",
+ f:{"Cómo":"Vaporetto L12 desde Fondamente Nove","Murano":"~10 min","Burano":"~40 min","Día":"23 agosto · pase 24h (25 €) conviene"},
+ tip:"El plan perfecto para el 23: Murano en la mañana, Burano después de comer para la foto de las casas de colores.",map:"Murano Venezia"},
+{cat:"Comer en Venecia",name:"Bacareto da Lele",tag:"El bacaro de los estudiantes · €",
+ story:"El bar más barato y auténtico de Venecia, a 5 minutos de la estación. Mini panini desde 1 €, vino desde 0,80 €. Solo efectivo. Sin asientos. Solo locales.",
+ f:{"Dónde":"Campo dei Tolentini 183, Santa Croce · 5 min hotel","Precio":"€ · sándwich ~1 €","Ojo":"Solo efectivo · sin asientos"},
+ tip:"Es la primera parada al llegar en tren y la última antes de irse. El lugar más veneciano del viaje.",map:"Bacareto da Lele Venezia"},
+{cat:"Comer en Venecia",name:"Bar All'Arco · Cantina Do Mori",tag:"Los mejores bacari de Rialto · €",
+ story:"All'Arco: padre e hijo detrás de la barra del bacaro más querido del mercado de Rialto. Do Mori: fundado en el siglo XV, el bacaro más antiguo de la ciudad.",
+ f:{"All'Arco":"Calle Arco, San Polo 436 · media mañana","Do Mori":"Calle dei Do Mori, San Polo 429 · 8:00–19:30","Tip":"Llegar a las 10-11 am"},
+ tip:"All'Arco: prueben el baccalà mantecato — bacalao batido con aceite sobre pan. Sabe a Venecia.",map:"Bar All Arco Venezia"},
+{cat:"Comer en Venecia",name:"Osteria La Zucca",tag:"Cocina de verduras · reserva · €€",
+ story:"La mejor osteria de Santa Croce — a pasos del hotel. La lasaña y el flan de alcachofa con fondue de parmesano son de otro nivel.",
+ f:{"Dónde":"Santa Croce 1762 · cerca del hotel","Reserva":"Recomendada · solo 35 plazas","Horario":"12:30–14:30 y 19:00–22:30 · cierra domingos"},
+ tip:"Es la mejor opción de cena cerca del hotel. Reserven con un día de antelación.",map:"Osteria La Zucca Venezia"},
+{cat:"Comer en Venecia",name:"Antiche Carampane",tag:"Pescado auténtico · reserva · €€€",
+ story:"La trattoria de pescado más querida de San Polo. Guía Michelin. La carta cambia según el mercado de Rialto del día.",
+ f:{"Dónde":"Rio Terà delle Carampane, San Polo 1911","Reserva":"Muy recomendada","Horario":"Cierra domingos y lunes"},
+ tip:"Es el lugar para comer pescado veneciano de verdad. No lo que venden en los menus turísticos de San Marcos.",map:"Antiche Carampane Venezia"},
+{cat:"Comer en Venecia",name:"Ruta de cicchetti",tag:"Tapeo veneciano · del hotel a Rialto",
+ story:"El plan perfecto para la tarde: ruta de bacari desde el hotel hasta Rialto, parando en cada uno para un cicchetto y una ombra (copita de vino).",
+ f:{"Parada 1":"Bacareto da Lele (junto al hotel)","Parada 2":"Cantina Do Mori","Parada 3":"Bar All'Arco","Parada 4":"Al Mercà (Rialto, frente al Gran Canal)"},
+ tip:"Lleven efectivo. Devuelvan platos y vasos a la barra cuando terminen. Horario ideal: 11-13h o 18-20h.",map:"San Polo Venezia"}
+];
+</script>
+
+<script>
+const INFO_HTML=`
+<div class="icard emg">
+  <h3>Emergencias</h3>
+  <a class="bigcall" href="tel:112">📞 Llamar al 112</a>
+  <p style="font-size:13px;"><b>112 funciona en toda Europa</b>, gratis desde cualquier teléfono aunque no tengan saldo o SIM. Policía, ambulancia, bomberos.</p>
+</div>
+<div class="icard">
+  <h3>Consulados de México</h3>
+  <div class="callrow"><div class="cr-t"><b>Embajada Madrid</b><span>Carrera de San Jerónimo 46</span></div><a class="cr-a" href="tel:+34913692814">📞 Llamar</a></div>
+  <div class="callrow"><div class="cr-t"><b>Urgencias Madrid · 24h</b><span>Hospital, accidente, detención</span></div><a class="cr-a" href="tel:+34660862625">📞 Llamar</a></div>
+  <div class="callrow"><div class="cr-t"><b>Embajada Roma</b><span>Via Lazzaro Spallanzani 16</span></div><a class="cr-a" href="tel:+390644160610">📞 Llamar</a></div>
+  <div class="callrow"><div class="cr-t"><b>Urgencias Italia · 24h</b><span>Protección consular</span></div><a class="cr-a" href="tel:+393394353085">📞 Llamar</a></div>
+</div>
+<div class="icard">
+  <h3>Sus alojamientos</h3>
+  <div class="callrow"><div class="cr-t"><b>Depa Camila · Madrid</b><span>Calle de Larra 3, Chamberí</span></div><a class="cr-a" href="https://maps.google.com/?q=Calle+de+Larra+3+Madrid" target="_blank">🗺 Mapa</a></div>
+  <div class="callrow"><div class="cr-t"><b>Hotel Adriano · Roma</b><span>Via d'Ascanio 11 · MR66772100</span></div><a class="cr-a" href="tel:+390668802451">📞 Llamar</a></div>
+  <div class="callrow"><div class="cr-t"><b>Hotel Olimpia · Venecia</b><span>Santa Croce 395 · NIP 0900</span></div><a class="cr-a" href="tel:+39041711041">📞 Llamar</a></div>
+</div>
+<div class="icard">
+  <h3>Todos los códigos de reserva</h3>
+  <div class="fact"><span class="fk">5 y 29 ago</span><span class="fv">GDL ⇄ Madrid · <b>LJFCQW</b></span></div>
+  <div class="fact"><span class="fk">12 ago</span><span class="fv">GDL → Madrid Daniel · <b>EMUYZD</b></span></div>
+  <div class="fact"><span class="fk">18 ago</span><span class="fv">Madrid→Roma · Daniel <b>YVFKFC</b> · Mamá <b>GRMTHL</b> · Papá <b>GRD2RL</b></span></div>
+  <div class="fact"><span class="fk">18–22 ago</span><span class="fv">Hotel Roma · <b>MR66772100</b></span></div>
+  <div class="fact"><span class="fk">18 ago</span><span class="fv">Sant'Angelo · <b>GYG32L44QA87</b></span></div>
+  <div class="fact"><span class="fk">18 ago</span><span class="fv">Panteón · <b>GYGKBF9BZQW8</b></span></div>
+  <div class="fact"><span class="fk">20 ago</span><span class="fv">Museos Vaticanos · <b>GYG83XKGN2Z8</b></span></div>
+  <div class="fact"><span class="fk">20 ago</span><span class="fv">Necrópolis · <b>UACD-6S9Q</b></span></div>
+  <div class="fact"><span class="fk">22 ago</span><span class="fv">Tren Roma→Venecia · <b>EWK5AN</b> · 7A/7B/7D</span></div>
+  <div class="fact"><span class="fk">22–24 ago</span><span class="fv">Hotel Venecia · <b>5289593485</b> · NIP 0900</span></div>
+  <div class="fact"><span class="fk">22 ago</span><span class="fv">Palacio Ducal+Basílica · <b>GYGX7M965QLG</b></span></div>
+  <div class="fact"><span class="fk">24 ago</span><span class="fv">Venecia→Madrid · Papás <b>W6Z7XA</b> · Daniel <b>Q4Q73N</b></span></div>
+</div>
+<div class="icard warn2">
+  <h3>Migración · lo nuevo de 2026</h3>
+  <p><b>Sistema EES:</b> desde abril 2026 Europa ya no sella pasaportes. Toman huellas y foto la primera vez. Puede hacer filas más largas en Barajas — tengan paciencia.</p>
+  <p><b>ETIAS: NO lo necesitan.</b> Se pospuso a 2027. Los mexicanos entran solo con pasaporte vigente.</p>
+</div>
+<div class="icard warn2">
+  <h3>Transporte desde los aeropuertos</h3>
+  <p><b>Madrid Barajas → Larra 3:</b> Bolt o Uber ~15 € (recomendado). El taxi tiene tarifa fija de 33 €.</p>
+  <p><b>Roma Fiumicino → hotel:</b> Taxi oficial 55 € fijos. Solo taxis blancos "SERVIZIO PUBBLICO".</p>
+  <p><b>Venecia → aeropuerto Marco Polo:</b> Bus ATVO desde Piazzale Roma · 10 € · 20 min · directo.</p>
+</div>
+<div class="icard">
+  <h3>Dinero</h3>
+  <ul>
+    <li><b>Cajero sin comisión:</b> OpenBank (Santander) cerca de Alonso Martínez en Madrid.</li>
+    <li>Eviten Euronet (cajeros amarillos): cobran hasta 5 € de comisión.</li>
+    <li><b>Siempre elegir EUROS</b> cuando el cajero pregunte — no pesos.</li>
+    <li>En Italia: coperto (1,50-3 € por persona) es legal y normal.</li>
+    <li>Propinas: no son obligatorias. Redondear si el servicio fue muy bueno.</li>
+  </ul>
+</div>
+<div class="icard">
+  <h3>Teléfono e internet</h3>
+  <p><b>eSIM</b> es lo mejor para Samsung Galaxy. Cómprenla antes (Holafly, Airalo, Saily). Una eSIM europea funciona en España e Italia.</p>
+  <p><b>Antes de salir:</b> descarguen mapas de Madrid, Roma y Venecia en Google Maps para usar sin internet.</p>
+</div>
+<div class="icard warn2">
+  <h3>Vestimenta en iglesias</h3>
+  <p>Vaticano, San Pedro, Capilla Sixtina, Basílica de San Marcos: <b>hombros y rodillas cubiertos obligatorio</b>. Lleven siempre un pañuelo ligero en la mochila.</p>
+</div>
+<div class="icard">
+  <h3>Seguridad</h3>
+  <ul>
+    <li><b>Roma:</b> carteristas en bus 64/40, metro L-A, Termini y Fontana di Trevi.</li>
+    <li><b>Madrid:</b> Sol, Gran Vía, El Rastro, metro líneas 1 y 5.</li>
+    <li>Bolso al frente · cartera en bolsillo delantero · pasaporte en la caja fuerte del hotel.</li>
+  </ul>
+</div>
+<div class="icard">
+  <h3>Frases útiles en italiano</h3>
+  <div class="phrase"><span class="ph-i">Buongiorno / Buonasera</span><span class="ph-m">Buenos días / Buenas tardes</span></div>
+  <div class="phrase"><span class="ph-i">Grazie / Prego</span><span class="ph-m">Gracias / De nada</span></div>
+  <div class="phrase"><span class="ph-i">Il conto, per favore</span><span class="ph-m">La cuenta, por favor</span></div>
+  <div class="phrase"><span class="ph-i">Quanto costa?</span><span class="ph-m">¿Cuánto cuesta?</span></div>
+  <div class="phrase"><span class="ph-i">Dov'è il bagno?</span><span class="ph-m">¿Dónde está el baño?</span></div>
+  <div class="phrase"><span class="ph-i">Senza zucchero</span><span class="ph-m">Sin azúcar (café)</span></div>
+  <div class="phrase"><span class="ph-i">Un tavolo per tre</span><span class="ph-m">Una mesa para tres</span></div>
+  <div class="phrase"><span class="ph-i">Acqua del rubinetto</span><span class="ph-m">Agua de la llave (gratis)</span></div>
+</div>
+<div style="height:20px"></div>`;
+
+/* ============================================================
+   RENDER ENGINE
+============================================================ */
+const MES={8:"AGO"};
+const dn=s=>parseInt(s.split("-")[2],10);
+function chips(w){return(w||[]).map(x=>`<span class="chip c-${x}">${WHO[x]}</span>`).join("");}
+
+function evHtml(e){
+  const time=e.time==="—"?"—":e.time+(e.end?"<br>↓<br>"+e.end:"");
+  let h=`<div class="ticket ${e.t||''} ${e.pending?'pending':''}">
+    <div class="stub">${IC[e.t]||IC.note}<div class="t">${time}</div></div>
+    <div class="notch t"></div><div class="notch b"></div>
+    <div class="tbody">`;
+  if(e.pending)h+=`<span class="pbadge">Por confirmar</span><br>`;
+  h+=`<div class="ttitle">${e.title}</div>`;
+  if(e.loc)h+=`<div class="tloc">${e.loc}</div>`;
+  h+=`<div class="chips">${chips(e.who)}</div>`;
+  if(e.code)h+=`<div class="tcode">Reserva <b>${e.code}</b></div>`;
+  const acts=[];
+  if(e.map)acts.push(`<a class="tbtn map" href="${gmap(e.map)}" target="_blank" rel="noopener">${IC.map} Mapa</a>`);
+  if(e.tel)acts.push(`<a class="tbtn tel" href="tel:${e.tel}">${IC.tel} Llamar</a>`);
+  if(e.det)acts.push(`<button class="tbtn" onclick="togDet(this)">${IC.info} Detalles</button>`);
+  if(acts.length)h+=`<div class="tactions">${acts.join("")}</div>`;
+  if(e.det)h+=`<div class="detail">${e.det}</div>`;
+  h+=`</div></div>`;
+  return h;
+}
+
+function renderItin(){
+  let nav="",main="";
+  DAYS.forEach((d,i)=>{
+    const n=dn(d.d), has=d.ev&&d.ev.length;
+    nav+=`<button class="daypill ${has?'':'free'}" id="p${i}" onclick="jump(${i})">
+      <span class="dow">${d.dow.slice(0,3)}</span><span class="num">${n}</span><span class="dot"></span>
+    </button>`;
+    main+=`<section class="day-section" id="d${i}">
+      <div class="day-head"><span class="dnum">${n} ${MES[8]}</span><span class="dmeta">${d.dow}</span><span class="dcity">${d.city}</span></div>`;
+    if(d.note)main+=`<div class="day-note">${d.note}</div>`;
+    if(has)main+=d.ev.map(evHtml).join("");
+    if(d.tips&&d.tips.length){
+      main+=`<div class="freeday">`;
+      if(!has)main+=`<b>Día libre — a su ritmo</b>`;
+      main+=`<div class="tips">`+d.tips.map(t=>`<div class="tip-row"><span class="ti">${t.e}</span><span>${t.t}</span></div>`).join("")+`</div>`;
+      main+=`<button class="sug" onclick="go('v-${d.sug||'madrid'}')">${IC.map} Ver guía →</button></div>`;
+    } else if(!has){
+      main+=`<div class="freeday"><b>Día libre</b><p>Sin nada agendado. A su ritmo.</p>
+        <button class="sug" onclick="go('v-${d.sug||'madrid'}')">${IC.map} Ver guía →</button></div>`;
+    }
+    main+=`</section>`;
+  });
+  document.getElementById("daynav").innerHTML=nav;
+  document.getElementById("itin-main").innerHTML=main;
+}
+
+const GUIDES={};
+function placeHtml(p,i){
+  let h=`<div class="place ${p.booked?'booked':''}" onclick="togPlace(this,event)">
+    <div class="place-head">
+      <div class="place-idx">${p.booked?'✓':i}</div>
+      <div class="place-t"><h3>${p.name}</h3><div class="place-tag">${p.tag}</div></div>
+      <div class="place-arrow">${IC.chev}</div>
+    </div><div class="place-body">`;
+  if(p.booked)h+=`<span class="booked-flag">${p.booked}</span>`;
+  h+=`<div class="story">${p.story}</div><div class="facts">`;
+  for(const k in p.f)h+=`<div class="fact"><span class="fk">${k}</span><span class="fv">${p.f[k]}</span></div>`;
+  h+=`</div><div class="tip-box"><b>Tip de local</b> ${p.tip}</div>`;
+  if(p.map)h+=`<div class="tactions"><a class="tbtn map" href="${gmap(p.map)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${IC.map} Abrir en mapas</a></div>`;
+  h+=`</div></div>`;return h;
+}
+function paint(data,gid,cat){
+  let h="",last="";
+  data.forEach((p,i)=>{
+    if(cat!=="all"&&p.cat!==cat)return;
+    if(p.cat!==last){h+=`<div class="sectitle">${p.cat}</div>`;last=p.cat;}
+    h+=placeHtml(p,i+1);
+  });
+  document.getElementById(gid).innerHTML=h+`<div style="height:20px"></div>`;
+}
+function renderGuide(data,fid,gid){
+  const cats=[...new Set(data.map(p=>p.cat))];
+  document.getElementById(fid).innerHTML=
+    `<button class="fchip on" onclick="filt('${fid}','${gid}','all',this)">Todo</button>`+
+    cats.map(c=>`<button class="fchip" onclick="filt('${fid}','${gid}','${c}',this)">${c}</button>`).join("");
+  paint(data,gid,"all");
+  GUIDES[gid]=data;
+}
+function filt(fid,gid,cat,btn){
+  document.querySelectorAll("#"+fid+" .fchip").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+  paint(GUIDES[gid],gid,cat);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* INTERACCIÓN */
+function togDet(b){
+  const d=b.closest(".tbody").querySelector(".detail");
+  d.classList.toggle("open");
+  b.innerHTML=d.classList.contains("open")?IC.info+" Ocultar":IC.info+" Detalles";
+}
+function togPlace(el,e){if(e.target.closest("a"))return;el.classList.toggle("open");}
+function jump(i){document.getElementById("d"+i).scrollIntoView({behavior:"smooth",block:"start"});}
+function go(v){
+  document.querySelectorAll(".view").forEach(s=>s.classList.remove("active"));
+  document.getElementById(v).classList.add("active");
+  document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("on",b.dataset.view===v));
+  window.scrollTo(0,0);
+}
+function showModal(id){
+  document.getElementById("modal-content").innerHTML=MODALS[id]||"";
+  document.getElementById("modal-bg").classList.add("show");
+}
+function hideModal(){document.getElementById("modal-bg").classList.remove("show");}
+document.querySelectorAll(".navbtn").forEach(b=>b.onclick=()=>go(b.dataset.view));
+
+/* CUENTA REGRESIVA */
+function cd(){
+  const start=new Date("2026-08-05T09:45:00-06:00"),end=new Date("2026-08-29T18:35:00-06:00"),now=new Date();
+  const el=document.getElementById("countdown");
+  if(now<start){const d=Math.ceil((start-now)/86400000);el.innerHTML=`✈️ Faltan <b>${d}</b> ${d===1?"día":"días"} para el viaje`;}
+  else if(now<=end){const d=Math.floor((now-start)/86400000)+1;el.innerHTML=`📍 Día <b>${d}</b> del viaje`;}
+  else el.innerHTML=`🧡 ¡Qué viaje se dieron!`;
+}
+cd();
+
+/* SCROLL ACTIVO */
+const tt=document.getElementById("toTop");
+window.addEventListener("scroll",()=>{
+  tt.classList.toggle("show",window.scrollY>500);
+  if(!document.getElementById("v-itin").classList.contains("active"))return;
+  const secs=document.querySelectorAll(".day-section");
+  let cur=0;
+  secs.forEach((s,i)=>{if(s.getBoundingClientRect().top<130)cur=i;});
+  document.querySelectorAll(".daypill").forEach(p=>p.classList.remove("active"));
+  const pill=document.getElementById("p"+cur);
+  if(pill){pill.classList.add("active");pill.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}
+},{passive:true});
+
+/* INIT */
+renderItin();
+renderGuide(MADRID,"f-madrid","g-madrid");
+renderGuide(ROMA,"f-roma","g-roma");
+renderGuide(VENECIA,"f-venecia","g-venecia");
+document.getElementById("g-info").innerHTML=INFO_HTML;
+</script>
+
+<script>
+/* ============================================================
+   SISTEMA DE RESERVAS PERSONALIZADAS
+============================================================ */
+const RES_KEY='viaje2026_reservas_v2';
+let editingId=null;
+
+/* Fechas del viaje para el selector */
+const TRIP_DATES=(()=>{
+  const out=[];
+  const start=new Date('2026-08-05');
+  const end=new Date('2026-08-29');
+  const days=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const months=['ene','feb','mar','abr','may','jun','jul','ago','sep'];
+  for(let d=new Date(start);d<=end;d.setDate(d.getDate()+1)){
+    const iso=d.toISOString().slice(0,10);
+    const label=`${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
+    out.push({iso,label});
+  }
+  return out;
+})();
+
+/* Init selector de fechas */
+function initDateSelect(){
+  const sel=document.getElementById('af-date');
+  TRIP_DATES.forEach(({iso,label})=>{
+    const o=document.createElement('option');
+    o.value=iso; o.textContent=label; sel.appendChild(o);
+  });
+  // Default al primer día libre
+  sel.value='2026-08-05';
+}
+initDateSelect();
+
+/* Cargar / guardar */
+function loadReservas(){try{return JSON.parse(localStorage.getItem(RES_KEY)||'[]');}catch{return[];}}
+function saveReservas(arr){try{localStorage.setItem(RES_KEY,JSON.stringify(arr));}catch(e){alert('No se pudo guardar: '+e.message);}}
+
+/* Toggle quién va */
+function togWho(btn,who){btn.classList.toggle('on');}
+
+function getWho(){
+  const chips=document.querySelectorAll('#add-form .wc');
+  const who=[];
+  chips.forEach(c=>{if(c.classList.contains('on'))who.push(c.classList[1]);});
+  return who;
+}
+
+/* Abrir / cerrar modal */
+function openAddReserva(id=null){
+  editingId=id;
+  document.getElementById('modal-add-bg').classList.add('show');
+  if(id){
+    // Editar
+    const r=loadReservas().find(x=>x.id===id);
+    if(!r)return;
+    document.getElementById('add-modal-title').textContent='Editar reserva';
+    document.getElementById('af-date').value=r.date;
+    document.getElementById('af-name').value=r.name;
+    document.getElementById('af-time').value=r.time;
+    document.getElementById('af-pax').value=r.pax;
+    document.getElementById('af-code').value=r.code||'';
+    document.getElementById('af-notes').value=r.notes||'';
+    document.querySelectorAll('#add-form .wc').forEach(c=>{
+      c.classList.toggle('on',r.who.includes(c.classList[1]));
+    });
+  } else {
+    document.getElementById('add-modal-title').textContent='Nueva reserva';
+    document.getElementById('af-name').value='';
+    document.getElementById('af-code').value='';
+    document.getElementById('af-notes').value='';
+    document.querySelectorAll('#add-form .wc').forEach(c=>c.classList.add('on'));
+  }
+}
+function closeAddReserva(){
+  document.getElementById('modal-add-bg').classList.remove('show');
+  editingId=null;
+}
+
+/* Guardar */
+function guardarReserva(){
+  const name=document.getElementById('af-name').value.trim();
+  if(!name){document.getElementById('af-name').focus();return;}
+  const r={
+    id:editingId||('r_'+Date.now()),
+    date:document.getElementById('af-date').value,
+    name,
+    time:document.getElementById('af-time').value,
+    pax:document.getElementById('af-pax').value,
+    who:getWho(),
+    code:document.getElementById('af-code').value.trim().toUpperCase(),
+    notes:document.getElementById('af-notes').value.trim(),
+    ts:Date.now()
+  };
+  const arr=loadReservas().filter(x=>x.id!==r.id);
+  arr.push(r);
+  saveReservas(arr);
+  closeAddReserva();
+  injectCustomReservas();
+}
+
+/* Eliminar */
+function borrarReserva(id){
+  if(!confirm('¿Eliminar esta reserva?'))return;
+  saveReservas(loadReservas().filter(x=>x.id!==id));
+  injectCustomReservas();
+}
+
+/* Construir HTML de ticket personalizado */
+function customTicketHtml(r){
+  const paxText=r.pax?` · ${r.pax} pers.`:'';
+  const whoHtml=(r.who||[]).map(w=>`<span class="chip c-${w}">${WHO[w]}</span>`).join('');
+  return `<div class="ticket food custom-ticket" id="cr_${r.id}">
+    ${IC.food}
+    <div class="stub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v7a2 2 0 002 2 2 2 0 002-2V3M9 12v9M18 3c-1.5 1-2 2.5-2 5v13"/></svg>
+      <div class="t">${r.time||'—'}</div></div>
+    <div class="notch t"></div><div class="notch b"></div>
+    <div class="tbody">
+      <span class="res-badge">✓ Tu reserva</span>
+      <div class="ttitle">${r.name}</div>
+      ${r.notes?`<div class="tloc">${r.notes}</div>`:''}
+      <div class="chips">${whoHtml}</div>
+      ${r.code?`<div class="tcode">Reserva <b>${r.code}</b></div>`:''}
+      <div class="tactions">
+        <button class="tbtn" onclick="openAddReserva('${r.id}')">${IC.info} Editar</button>
+      </div>
+    </div>
+    <button class="del-btn" onclick="borrarReserva('${r.id}')" title="Eliminar">×</button>
+  </div>`;
+}
+
+/* Inyectar reservas personalizadas en el itinerario */
+function injectCustomReservas(){
+  // Limpiar anteriores custom tickets
+  document.querySelectorAll('[id^="cr_"]').forEach(el=>el.remove());
+  const reservas=loadReservas();
+  reservas.forEach(r=>{
+    // Buscar la section del día correspondiente
+    const dayIdx=DAYS.findIndex(d=>d.d===r.date);
+    if(dayIdx<0)return;
+    const section=document.getElementById('d'+dayIdx);
+    if(!section)return;
+    // Crear y inyectar
+    const div=document.createElement('div');
+    div.innerHTML=customTicketHtml(r);
+    const ticket=div.firstChild;
+    // Insertar ordenado por hora (aproximado — buscar posición correcta)
+    const existingTickets=section.querySelectorAll('.ticket');
+    let inserted=false;
+    existingTickets.forEach(ex=>{
+      if(inserted)return;
+      const exTime=ex.querySelector('.t')?.textContent||'00:00';
+      if(r.time && r.time<exTime){
+        section.insertBefore(ticket,ex);
+        inserted=true;
+      }
+    });
+    if(!inserted)section.appendChild(ticket);
+  });
+}
+
+/* Mostrar/ocultar FAB según la vista */
+const fabAdd=document.getElementById('fabAdd');
+function updateFab(viewId){
+  fabAdd.classList.toggle('hide',viewId!=='v-itin');
+}
+
+/* Sobreescribir go() para actualizar FAB */
+const _go_orig=go;
+function go(v){
+  _go_orig(v);
+  updateFab(v);
+}
+
+/* Scroll: ocultar FAB cuando el toTop aparece para que no se solapen */
+window.addEventListener('scroll',()=>{
+  fabAdd.style.bottom=window.scrollY>500
+    ?'calc(var(--nav-h) + 62px + env(safe-area-inset-bottom) + 50px)'
+    :'calc(var(--nav-h) + 62px + env(safe-area-inset-bottom))';
+},{passive:true});
+
+/* Cargar reservas personalizadas al iniciar */
+document.addEventListener('DOMContentLoaded',()=>{injectCustomReservas();});
+// También ejecutar directo por si DOMContentLoaded ya pasó
+setTimeout(injectCustomReservas,100);
+</script>
+</body>
+</html>
